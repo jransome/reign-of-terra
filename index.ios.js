@@ -54,7 +54,7 @@ export default class reign_of_terra extends Component {
       this.setState({initialPosition: initialRegion});
       this.setState({markerPosition: initialRegion});
       this.setState({ linePositions:
-      [  {latitude: 1, longitude: 1}, {latitude: 37, longitude: -122} ] });
+      [  {latitude: lat, longitude: long}, {latitude: 37, longitude: -122} ] });
     },
     (error) => alert(JSON.stringify(error)),
     { enabledHighAccuracy: true, timeout: 20000, maximumAge: 1000 });
@@ -70,7 +70,7 @@ export default class reign_of_terra extends Component {
         this.setState({initialPosition: lastRegion});
         this.setState({markerPosition: lastRegion});
         this.setState({ linePositions:
-       [  {latitude: 1, longitude: 1}, {latitude: 37, longitude: -122} ] });
+        [  {latitude: lat, longitude: long}, {latitude: 37, longitude: -122} ] });
 
      });
   };
@@ -90,7 +90,8 @@ export default class reign_of_terra extends Component {
      this.setState({ startStopButtonText: 'Start' });
      this.setState({ startStop: true });
      this.setState({ linePositions:
-    [  {latitude: 1, longitude: 1}, {latitude: 37, longitude: -122} ] });
+    [  {latitude: 1, longitude: 1}, {latitude: 37, longitude: -122} ]
+  });
     }
   }
   render() {
