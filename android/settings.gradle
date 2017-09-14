@@ -1,0 +1,3 @@
+rootProject.name = 'reign_of_terra'
+
+include ':app'
