@@ -45,7 +45,6 @@ export default class reign_of_terra extends Component {
     navigator.geolocation.getCurrentPosition((position) => {
       var lat = position.coords.latitude;
       var long = position.coords.longitude;
-      alert("got position" + lat + long);
       var initialRegion = {
         latitude: lat,
         longitude: long,
@@ -54,6 +53,8 @@ export default class reign_of_terra extends Component {
       };
       this.setState({initialPosition: initialRegion});
       this.setState({markerPosition: initialRegion});
+      this.setState({ linePositions:
+      [  {latitude: 1, longitude: 1}, {latitude: 37, longitude: -122} ] });
     },
     (error) => alert(JSON.stringify(error)),
     { enabledHighAccuracy: true, timeout: 20000, maximumAge: 1000 });
@@ -68,6 +69,8 @@ export default class reign_of_terra extends Component {
         };
         this.setState({initialPosition: lastRegion});
         this.setState({markerPosition: lastRegion});
+        this.setState({ linePositions:
+       [  {latitude: 1, longitude: 1}, {latitude: 37, longitude: -122} ] });
 
      });
   };
@@ -80,12 +83,14 @@ export default class reign_of_terra extends Component {
       this.setState({ startStopButtonColor: 'red' });
       this.setState({ startStopButtonText: 'Stop' });
       this.setState({ startStop: false });
-      // this.setState({ linePositions: [{latitude: 37, longitude: -122},{latitude: 30, longitude: -120}] });
-    }
+      this.setState({ linePositions:
+      [  {latitude: 1, longitude: 1}, {latitude: 37, longitude: -122} ] });    }
    else {
      this.setState({ startStopButtonColor: 'green' });
      this.setState({ startStopButtonText: 'Start' });
      this.setState({ startStop: true });
+     this.setState({ linePositions:
+    [  {latitude: 1, longitude: 1}, {latitude: 37, longitude: -122} ] });
     }
   }
   render() {
@@ -115,6 +120,7 @@ export default class reign_of_terra extends Component {
           <MapView.Polyline
           coordinates={this.state.linePositions}
           color="black"
+          strokeWidth={10}
           />
 
         </MapView>
