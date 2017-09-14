@@ -35,10 +35,9 @@ export default class reign_of_terra extends Component {
       startStop: true,
       startStopButtonColor: 'green',
       startStopButtonText: 'Start',
-      linePositions: [{
-        latitude: 0,
-        longitude: 0
-      }]
+      linePositions:
+      [  {latitude: 1, longitude: 1}, {latitude: 37, longitude: -122} ]
+
     };
   }
   watchID: ?number = null
@@ -69,47 +68,25 @@ export default class reign_of_terra extends Component {
         };
         this.setState({initialPosition: lastRegion});
         this.setState({markerPosition: lastRegion});
+
      });
   };
   componentWillUnMount() {
     navigator.geolocation.clearWatch(this.watchID);
   }
+
   onStartStopButtonPress = () => {
     if (this.state.startStop === true) {
       this.setState({ startStopButtonColor: 'red' });
       this.setState({ startStopButtonText: 'Stop' });
       this.setState({ startStop: false });
-
-      var lastRegion = {
-        latitude: 51.5,
-        longitude: 0,
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA,
-      };
-      this.setState({markerPosition: lastRegion});
-      this.setState({initialPosition: lastRegion});
-
-      var newLinePositions = this.state.linePositions;
-      newLinePositions.push({
-        latitude: Math.random() * 100,
-        longitude: Math.random() * 100
-      });
-      this.setState({linePositions: newLinePositions});
-   }
+      // this.setState({ linePositions: [{latitude: 37, longitude: -122},{latitude: 30, longitude: -120}] });
+    }
    else {
      this.setState({ startStopButtonColor: 'green' });
      this.setState({ startStopButtonText: 'Start' });
      this.setState({ startStop: true });
-
-     var lastRegion = {
-       latitude: Math.random() * 100,
-       longitude: Math.random() * 100,
-       latitudeDelta: LATITUDE_DELTA,
-       longitudeDelta: LONGITUDE_DELTA,
-     };
-     this.setState({markerPosition: lastRegion});
-     this.setState({initialPosition: lastRegion});
-   }
+    }
   }
   render() {
     return (
@@ -134,10 +111,12 @@ export default class reign_of_terra extends Component {
               </View>
             </View>
           </MapView.Marker>
+
           <MapView.Polyline
-          coordinates={[this.state.markerPosition]}
+          coordinates={this.state.linePositions}
           color="black"
           />
+
         </MapView>
       </View>
     );
