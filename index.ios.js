@@ -32,11 +32,11 @@ export default class reign_of_terra extends Component {
         latitude: 0,
         longitude: 0
       },
-      startStop: true,
+      startStop: false,
       startStopButtonColor: 'green',
       startStopButtonText: 'Start',
       linePositions:
-      [  {latitude: 1, longitude: 1}, {latitude: 37, longitude: -122} ]
+      [  {latitude: 52, longitude: 1}, {latitude: 37, longitude: -121} ]
 
     };
   }
@@ -51,26 +51,30 @@ export default class reign_of_terra extends Component {
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA,
       };
-      this.setState({initialPosition: initialRegion});
-      this.setState({markerPosition: initialRegion});
-      this.setState({ linePositions:
-      [  {latitude: lat, longitude: long}, {latitude: 37, longitude: -122} ] });
+      // this.setState({initialPosition: initialRegion});
+      // this.setState({markerPosition: initialRegion});
     },
     (error) => alert(JSON.stringify(error)),
     { enabledHighAccuracy: true, timeout: 20000, maximumAge: 1000 });
     this.watchID = navigator.geolocation.watchPosition((position) => {
         var lat = position.coords.latitude;
         var long = position.coords.longitude;
-        var lastRegion = {
-          latitude: lat,
-          longitude: long,
-          latitudeDelta: LATITUDE_DELTA,
-          longitudeDelta: LONGITUDE_DELTA,
-        };
-        this.setState({initialPosition: lastRegion});
-        this.setState({markerPosition: lastRegion});
-        this.setState({ linePositions:
-        [  {latitude: lat, longitude: long}, {latitude: 37, longitude: -122} ] });
+        // var lastRegion = {
+        //   latitude: lat,
+        //   longitude: long,
+        //   latitudeDelta: LATITUDE_DELTA,
+        //   longitudeDelta: LONGITUDE_DELTA,
+        // };
+        // this.setState({initialPosition: lastRegion});
+        // this.setState({markerPosition: lastRegion});
+
+        // alert("Tracking")
+        if (this.state.startStop === true) {
+          alert("Tracking")
+          var newPosition = { latitude: lat + 10, longitude: long +10 }
+          var newPositions = this.state.linePositions.concat(newPosition);
+          this.setState({ linePositions: newPositions })
+        }
 
      });
   };
@@ -80,18 +84,35 @@ export default class reign_of_terra extends Component {
 
   onStartStopButtonPress = () => {
     if (this.state.startStop === true) {
-      this.setState({ startStopButtonColor: 'red' });
-      this.setState({ startStopButtonText: 'Stop' });
+      this.setState({ startStopButtonColor: 'green' });
+      this.setState({ startStopButtonText: 'Start' });
       this.setState({ startStop: false });
-      this.setState({ linePositions:
-      [  {latitude: 1, longitude: 1}, {latitude: 37, longitude: -122} ] });    }
-   else {
-     this.setState({ startStopButtonColor: 'green' });
-     this.setState({ startStopButtonText: 'Start' });
+      //stop drawing line
+      // this.setState({ linePositions: [] });
+      var currentPosition = this.state.initialPosition;
+      var newPosition = {
+        latitude: currentPosition.latitude - Math.random() * 10,
+        longitude: currentPosition.longitude + Math.random() * 10
+      }
+      var test = this.state.linePositions.concat(newPosition)
+      console.log(test)
+
+      this.setState({ linePositions: test });
+    }
+    else {
+     this.setState({ startStopButtonColor: 'red' });
+     this.setState({ startStopButtonText: 'Stop' });
      this.setState({ startStop: true });
-     this.setState({ linePositions:
-    [  {latitude: 1, longitude: 1}, {latitude: 37, longitude: -122} ]
-  });
+
+     // start position
+     var currentPosition = this.state.initialPosition;
+     var newPosition = {
+       latitude: currentPosition.latitude + Math.random() * 100,
+       longitude: currentPosition.longitude + Math.random() * 100
+     }
+     var test = this.state.linePositions.concat(newPosition)
+     console.log(test)
+     this.setState({ linePositions: test });
     }
   }
   render() {
