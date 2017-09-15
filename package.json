@@ -9,8 +9,11 @@
 	"dependencies": {
 		"react": "16.0.0-alpha.12",
 		"react-native": "0.48.3",
+
 		"react-native-button": "^2.1.0",
-		"react-native-maps": "*"
+		"react-native-maps": "*",
+		"react-navigation": "^1.0.0-beta.11"
+
 	},
 	"devDependencies": {
 		"babel-jest": "21.0.2",
