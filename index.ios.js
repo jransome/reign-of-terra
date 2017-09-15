@@ -55,7 +55,7 @@ export default class reign_of_terra extends Component {
       this.setState({markerPosition: initialRegion});
     },
     (error) => alert(JSON.stringify(error)),
-    { enabledHighAccuracy: true, timeout: 20000, maximumAge: 1000 });
+    { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 });
     this.watchID = navigator.geolocation.watchPosition((position) => {
         var lat = position.coords.latitude;
         var long = position.coords.longitude;
