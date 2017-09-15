@@ -30,18 +30,6 @@ class HomePage extends React.Component {
   }
 }
 
-// class ChatScreen extends React.Component {
-//   static navigationOptions = {
-//     title: 'Chat with Lucy',
-//   };
-//   render() {
-//     return (
-//       <View>
-//       <Text>Chat with Lucy</Text>
-//       </View>
-//     );
-//   }
-// }
 
 
 const reign_of_terra = StackNavigator({
