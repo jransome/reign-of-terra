@@ -4,8 +4,8 @@ import {
   StyleSheet,
   Text,
   View,
-  Button,
   Dimensions,
+  Button,
   Switch
 } from 'react-native';
 
@@ -36,7 +36,7 @@ export default class reign_of_terra extends Component {
       startStopButtonColor: 'green',
       startStopButtonText: 'Start',
       linePositions:
-      [  {latitude: 52, longitude: 1}, {latitude: 37, longitude: -121} ]
+      [  {latitude: 51, longitude: 0.3}, {latitude: 37, longitude: -121} ]
 
     };
   }
@@ -51,26 +51,24 @@ export default class reign_of_terra extends Component {
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA,
       };
-      // this.setState({initialPosition: initialRegion});
-      // this.setState({markerPosition: initialRegion});
+      this.setState({initialPosition: initialRegion});
+      this.setState({markerPosition: initialRegion});
     },
     (error) => alert(JSON.stringify(error)),
     { enabledHighAccuracy: true, timeout: 20000, maximumAge: 1000 });
     this.watchID = navigator.geolocation.watchPosition((position) => {
         var lat = position.coords.latitude;
         var long = position.coords.longitude;
-        // var lastRegion = {
-        //   latitude: lat,
-        //   longitude: long,
-        //   latitudeDelta: LATITUDE_DELTA,
-        //   longitudeDelta: LONGITUDE_DELTA,
-        // };
-        // this.setState({initialPosition: lastRegion});
-        // this.setState({markerPosition: lastRegion});
+        var lastRegion = {
+          latitude: lat,
+          longitude: long,
+          latitudeDelta: LATITUDE_DELTA,
+          longitudeDelta: LONGITUDE_DELTA,
+        };
+        this.setState({initialPosition: lastRegion});
+        this.setState({markerPosition: lastRegion});
 
-        // alert("Tracking")
         if (this.state.startStop === true) {
-          alert("Tracking")
           var newPosition = { latitude: lat + 10, longitude: long +10 }
           var newPositions = this.state.linePositions.concat(newPosition);
           this.setState({ linePositions: newPositions })
@@ -107,8 +105,8 @@ export default class reign_of_terra extends Component {
      // start position
      var currentPosition = this.state.initialPosition;
      var newPosition = {
-       latitude: currentPosition.latitude + Math.random() * 100,
-       longitude: currentPosition.longitude + Math.random() * 100
+       latitude: currentPosition.latitude + Math.random(),
+       longitude: currentPosition.longitude + Math.random()
      }
      var test = this.state.linePositions.concat(newPosition)
      console.log(test)
@@ -118,19 +116,14 @@ export default class reign_of_terra extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={{width: SCREEN_WIDTH, height: 50, backgroundColor: 'powderblue', alignItems: "center", justifyContent: 'center'}}>
-        <Text style={{fontSize: 30, color: "black"}}> Map App </Text>
-        </View>
-        <View style={{width: SCREEN_WIDTH, height: 50, backgroundColor: 'lightgreen', alignItems: "center", justifyContent: 'center'}}>
-        <Button
-          color={this.state.startStopButtonColor}
-          onPress={this.onStartStopButtonPress}
-          title={this.state.startStopButtonText}
-        />
-        </View>
         <MapView
           style={styles.map}
-          region={this.state.initialPosition}>
+          region={this.state.initialPosition}
+          zoomEnabled={true}
+          minZoomLevel={5}
+          maxZoomLevel={20}
+          showsMyLocationButton={true}
+          showsUserLocation={true}>
           <MapView.Marker
           coordinate={this.state.markerPosition}>
             <View style={styles.radius}>
@@ -144,15 +137,24 @@ export default class reign_of_terra extends Component {
           color="black"
           strokeWidth={10}
           />
-
         </MapView>
+
+        <View style={{width: SCREEN_WIDTH, bottom: 0, top: SCREEN_HEIGHT-100, height: 100, backgroundColor: 'lightgreen', alignItems: "center", justifyContent: 'center'}}>
+
+          <Button
+            style={{fontSize: 100}}
+            color={this.state.startStopButtonColor}
+            onPress={this.onStartStopButtonPress}
+            title={this.state.startStopButtonText}
+          />
+        </View>
       </View>
     );
   }
 }
 const styles = StyleSheet.create({
   startButton: {
-    top: 200,
+    bottom: 0,
     position: 'absolute',
     borderWidth: 1,
     borderColor: 'rgba(0,112,255,0.3)',
@@ -179,7 +181,6 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    // justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
@@ -191,8 +192,8 @@ const styles = StyleSheet.create({
   map: {
     left: 0,
     right: 0,
-    top: 100,
-    bottom: 0,
+    top: 0,
+    bottom: 100,
     position: 'absolute',
   },
   instructions: {
