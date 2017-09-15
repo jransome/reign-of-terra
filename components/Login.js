@@ -17,9 +17,7 @@ class Login extends Component {
     const { navigate } = this.props.navigation;
     return (
       <View style={styles.container}>
-      <Image
-        source={require('../logo.png')} style={styles.imagePosition}
-      />
+      <Image style={styles.imagePosition} source={{uri: "https://i.stack.imgur.com/3kVAu.png"}} />
         <Text style={styles.name}>reign_of_terra</Text>
         <View style={styles.button}>
           <Button
