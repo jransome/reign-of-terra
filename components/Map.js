@@ -4,9 +4,10 @@ import {
   StyleSheet,
   Text,
   View,
-  Button,
   Dimensions,
-  Switch
+  Button,
+  Switch,
+  TouchableOpacity
 } from 'react-native';
 
 import MapView from 'react-native-maps'
@@ -23,7 +24,6 @@ class Map extends Component {
     title: 'Map',
   };
 
-
   constructor(props) {
     super(props);
     this.navigate = this.navigate.bind(this)
@@ -39,7 +39,7 @@ class Map extends Component {
         longitude: 0
       },
       startStop: false,
-      startStopButtonColor: 'green',
+      startStopButtonStyle: {width: SCREEN_WIDTH, bottom: SCREEN_HEIGHT - 100, height: 100, backgroundColor: 'green', alignItems: "center", justifyContent: 'center'},
       startStopButtonText: 'Start',
       linePositions:
       [  {latitude: 52, longitude: 1}, {latitude: 37, longitude: -121} ]
@@ -89,7 +89,8 @@ class Map extends Component {
 
   onStartStopButtonPress = () => {
     if (this.state.startStop === true) {
-      this.setState({ startStopButtonColor: 'green' });
+
+      this.setState({ startStopButtonStyle: {width: SCREEN_WIDTH, bottom: 0, top: SCREEN_HEIGHT-100, height: 100, backgroundColor: 'green', alignItems: "center", justifyContent: 'center'} });
       this.setState({ startStopButtonText: 'Start' });
       this.setState({ startStop: false });
       //stop drawing line
@@ -105,15 +106,15 @@ class Map extends Component {
       this.setState({ linePositions: test });
     }
     else {
-     this.setState({ startStopButtonColor: 'red' });
+     this.setState({ startStopButtonStyle: {width: SCREEN_WIDTH, bottom: 0, top: SCREEN_HEIGHT-100, height: 100, backgroundColor: 'red', alignItems: "center", justifyContent: 'center'} });
      this.setState({ startStopButtonText: 'Stop' });
      this.setState({ startStop: true });
 
      // start position
      var currentPosition = this.state.initialPosition;
      var newPosition = {
-       latitude: currentPosition.latitude + Math.random() * 100,
-       longitude: currentPosition.longitude + Math.random() * 100
+       latitude: currentPosition.latitude + Math.random(),
+       longitude: currentPosition.longitude + Math.random()
      }
      var test = this.state.linePositions.concat(newPosition)
      console.log(test)
@@ -130,25 +131,14 @@ class Map extends Component {
   render() {
     return (
       <View style={styles.container}>
-
-
-        <View style={{width: SCREEN_WIDTH, height: 50, backgroundColor: 'powderblue', alignItems: "center", justifyContent: 'center'}}>
-        <Text style={{fontSize: 30, color: "black"}}> Map App </Text>
-        </View>
-
-
-        <View style={{width: SCREEN_WIDTH, height: 50, backgroundColor: 'lightgreen', alignItems: "center", justifyContent: 'center'}}>
-        <Button
-          color={this.state.startStopButtonColor}
-          onPress={this.onStartStopButtonPress}
-          title={this.state.startStopButtonText}
-        />
-        </View>
-
-
         <MapView
           style={styles.map}
-          region={this.state.initialPosition}>
+          region={this.state.initialPosition}
+          zoomEnabled={true}
+          minZoomLevel={5}
+          maxZoomLevel={20}
+          showsMyLocationButton={true}
+          showsUserLocation={true}>
           <MapView.Marker
           coordinate={this.state.markerPosition}>
             <View style={styles.radius}>
@@ -162,19 +152,26 @@ class Map extends Component {
           color="black"
           strokeWidth={10}
           />
-
         </MapView>
+
+        <View style={this.state.startStopButtonStyle}>
+          <TouchableOpacity onPress={this.onStartStopButtonPress}>
+            <Text style={{fontSize: 80, color: "white"}}> {this.state.startStopButtonText} </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
 
 }
 const styles = StyleSheet.create({
-  startButton: {
-    top: 200,
-    position: 'absolute',
+  startStopButton: {
+    height: 100,
+    width: SCREEN_WIDTH,
     borderWidth: 1,
     borderColor: 'rgba(0,112,255,0.3)',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   radius: {
     height: 50,
@@ -198,7 +195,6 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    // justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
@@ -210,8 +206,8 @@ const styles = StyleSheet.create({
   map: {
     left: 0,
     right: 0,
-    top: 100,
-    bottom: 0,
+    top: 0,
+    bottom: 100,
     position: 'absolute',
   },
   instructions: {
