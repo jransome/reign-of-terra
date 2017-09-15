@@ -73,10 +73,8 @@ class Map extends Component {
         this.setState({initialPosition: lastRegion});
         this.setState({markerPosition: lastRegion});
 
-        // alert("Tracking")
         if (this.state.startStop === true) {
-          alert("Tracking")
-          var newPosition = { latitude: lat + 10, longitude: long +10 }
+          var newPosition = { latitude: lat, longitude: long}
           var newPositions = this.state.linePositions.concat(newPosition);
           this.setState({ linePositions: newPositions })
         }
@@ -87,38 +85,40 @@ class Map extends Component {
     navigator.geolocation.clearWatch(this.watchID);
   }
 
+  startTracking() {
+    var currentPosition = this.state.initialPosition;
+    var newPosition = {
+      latitude: currentPosition.latitude,
+      longitude: currentPosition.longitude
+    }
+    var newPositions = this.state.linePositions.concat(newPosition)
+    this.setState({ linePositions: newPositions });
+  }
+
+  stopTracking() {
+    this.setState({ linePositions: [] });
+  }
+
+  setStartStopButtonToStop() {
+    this.setState({ startStopButtonStyle: {width: SCREEN_WIDTH, bottom: 0, top: SCREEN_HEIGHT-165, height: 100, backgroundColor: 'red', alignItems: "center", justifyContent: 'center'} });
+    this.setState({ startStopButtonText: 'Stop' });
+    this.setState({ startStop: true });
+  }
+
+  setStartStopButtonToStart() {
+    this.setState({ startStopButtonStyle: {width: SCREEN_WIDTH, bottom: 0, top: SCREEN_HEIGHT-165, height: 100, backgroundColor: 'green', alignItems: "center", justifyContent: 'center'} });
+    this.setState({ startStopButtonText: 'Start' });
+    this.setState({ startStop: false });
+  }
+
   onStartStopButtonPress = () => {
     if (this.state.startStop === true) {
-
-      this.setState({ startStopButtonStyle: {width: SCREEN_WIDTH, bottom: 0, top: SCREEN_HEIGHT-165, height: 100, backgroundColor: 'green', alignItems: "center", justifyContent: 'center'} });
-      this.setState({ startStopButtonText: 'Start' });
-      this.setState({ startStop: false });
-      //stop drawing line
-      // this.setState({ linePositions: [] });
-      var currentPosition = this.state.initialPosition;
-      var newPosition = {
-        latitude: currentPosition.latitude - Math.random() * 10,
-        longitude: currentPosition.longitude + Math.random() * 10
-      }
-      var test = this.state.linePositions.concat(newPosition)
-      console.log(test)
-
-      this.setState({ linePositions: test });
+      setStartStopButtonToStart();
+      stopTracking();
     }
     else {
-     this.setState({ startStopButtonStyle: {width: SCREEN_WIDTH, bottom: 0, top: SCREEN_HEIGHT-165, height: 100, backgroundColor: 'red', alignItems: "center", justifyContent: 'center'} });
-     this.setState({ startStopButtonText: 'Stop' });
-     this.setState({ startStop: true });
-
-     // start position
-     var currentPosition = this.state.initialPosition;
-     var newPosition = {
-       latitude: currentPosition.latitude + Math.random(),
-       longitude: currentPosition.longitude + Math.random()
-     }
-     var test = this.state.linePositions.concat(newPosition)
-     console.log(test)
-     this.setState({ linePositions: test });
+     setStartStopButtonToStop();
+     startTracking();
     }
   }
 
@@ -151,6 +151,8 @@ class Map extends Component {
           coordinates={this.state.linePositions}
           color="black"
           strokeWidth={10}
+          geodesic={true}
+          linecap="round"
           />
         </MapView>
 
