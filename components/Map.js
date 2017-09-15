@@ -39,7 +39,7 @@ class Map extends Component {
         longitude: 0
       },
       startStop: false,
-      startStopButtonStyle: {width: SCREEN_WIDTH, bottom: SCREEN_HEIGHT - 100, height: 100, backgroundColor: 'green', alignItems: "center", justifyContent: 'center'},
+      startStopButtonStyle: {width: SCREEN_WIDTH, bottom: 0, top: SCREEN_HEIGHT-165, backgroundColor: 'green', alignItems: "center", justifyContent: 'center'},
       startStopButtonText: 'Start',
       linePositions:
       [  {latitude: 52, longitude: 1}, {latitude: 37, longitude: -121} ]
@@ -56,22 +56,22 @@ class Map extends Component {
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA,
       };
-      // this.setState({initialPosition: initialRegion});
-      // this.setState({markerPosition: initialRegion});
+      this.setState({initialPosition: initialRegion});
+      this.setState({markerPosition: initialRegion});
     },
     (error) => alert(JSON.stringify(error)),
     { enabledHighAccuracy: true, timeout: 20000, maximumAge: 1000 });
     this.watchID = navigator.geolocation.watchPosition((position) => {
         var lat = position.coords.latitude;
         var long = position.coords.longitude;
-        // var lastRegion = {
-        //   latitude: lat,
-        //   longitude: long,
-        //   latitudeDelta: LATITUDE_DELTA,
-        //   longitudeDelta: LONGITUDE_DELTA,
-        // };
-        // this.setState({initialPosition: lastRegion});
-        // this.setState({markerPosition: lastRegion});
+        var lastRegion = {
+          latitude: lat,
+          longitude: long,
+          latitudeDelta: LATITUDE_DELTA,
+          longitudeDelta: LONGITUDE_DELTA,
+        };
+        this.setState({initialPosition: lastRegion});
+        this.setState({markerPosition: lastRegion});
 
         // alert("Tracking")
         if (this.state.startStop === true) {
@@ -90,7 +90,7 @@ class Map extends Component {
   onStartStopButtonPress = () => {
     if (this.state.startStop === true) {
 
-      this.setState({ startStopButtonStyle: {width: SCREEN_WIDTH, bottom: 0, top: SCREEN_HEIGHT-100, height: 100, backgroundColor: 'green', alignItems: "center", justifyContent: 'center'} });
+      this.setState({ startStopButtonStyle: {width: SCREEN_WIDTH, bottom: 0, top: SCREEN_HEIGHT-165, height: 100, backgroundColor: 'green', alignItems: "center", justifyContent: 'center'} });
       this.setState({ startStopButtonText: 'Start' });
       this.setState({ startStop: false });
       //stop drawing line
@@ -106,7 +106,7 @@ class Map extends Component {
       this.setState({ linePositions: test });
     }
     else {
-     this.setState({ startStopButtonStyle: {width: SCREEN_WIDTH, bottom: 0, top: SCREEN_HEIGHT-100, height: 100, backgroundColor: 'red', alignItems: "center", justifyContent: 'center'} });
+     this.setState({ startStopButtonStyle: {width: SCREEN_WIDTH, bottom: 0, top: SCREEN_HEIGHT-165, height: 100, backgroundColor: 'red', alignItems: "center", justifyContent: 'center'} });
      this.setState({ startStopButtonText: 'Stop' });
      this.setState({ startStop: true });
 
@@ -156,7 +156,7 @@ class Map extends Component {
 
         <View style={this.state.startStopButtonStyle}>
           <TouchableOpacity onPress={this.onStartStopButtonPress}>
-            <Text style={{fontSize: 80, color: "white"}}> {this.state.startStopButtonText} </Text>
+            <Text style={{fontSize: 85, color: "white"}}> {this.state.startStopButtonText} </Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -166,7 +166,7 @@ class Map extends Component {
 }
 const styles = StyleSheet.create({
   startStopButton: {
-    height: 100,
+    height: 215,
     width: SCREEN_WIDTH,
     borderWidth: 1,
     borderColor: 'rgba(0,112,255,0.3)',
@@ -195,6 +195,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    flexDirection: 'column',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
