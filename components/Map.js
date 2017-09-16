@@ -18,6 +18,7 @@ const SCREEN_WIDTH = width;
 const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.922;
 const LONGITUDE_DELTA = (LATITUDE_DELTA * ASPECT_RATIO);
+const BUTTON_HEIGHT = 165;
 
 class Map extends Component {
   static navigationOptions = {
@@ -39,10 +40,9 @@ class Map extends Component {
         longitude: 0
       },
       startStop: false,
-      startStopButtonStyle: {width: SCREEN_WIDTH, bottom: 0, top: SCREEN_HEIGHT-165, backgroundColor: 'green', alignItems: "center", justifyContent: 'center'},
+      startStopButtonStyle: {width: SCREEN_WIDTH, bottom: 0, top: SCREEN_HEIGHT-170, backgroundColor: 'green', alignItems: "center", justifyContent: 'center'},
       startStopButtonText: 'Start',
-      linePositions:
-      [  {latitude: 52, longitude: 1}, {latitude: 37, longitude: -121} ]
+      linePositions: [],
     };
   }
   watchID: ?number = null
@@ -100,25 +100,25 @@ class Map extends Component {
   }
 
   setStartStopButtonToStop() {
-    this.setState({ startStopButtonStyle: {width: SCREEN_WIDTH, bottom: 0, top: SCREEN_HEIGHT-165, height: 100, backgroundColor: 'red', alignItems: "center", justifyContent: 'center'} });
+    this.setState({ startStopButtonStyle: {width: SCREEN_WIDTH, bottom: 0, top: SCREEN_HEIGHT-170, height: 100, backgroundColor: 'red', alignItems: "center", justifyContent: 'center'} });
     this.setState({ startStopButtonText: 'Stop' });
     this.setState({ startStop: true });
   }
 
   setStartStopButtonToStart() {
-    this.setState({ startStopButtonStyle: {width: SCREEN_WIDTH, bottom: 0, top: SCREEN_HEIGHT-165, height: 100, backgroundColor: 'green', alignItems: "center", justifyContent: 'center'} });
+    this.setState({ startStopButtonStyle: {width: SCREEN_WIDTH, bottom: 0, top: SCREEN_HEIGHT-170, height: 100, backgroundColor: 'green', alignItems: "center", justifyContent: 'center'} });
     this.setState({ startStopButtonText: 'Start' });
     this.setState({ startStop: false });
   }
 
   onStartStopButtonPress = () => {
     if (this.state.startStop === true) {
-      setStartStopButtonToStart();
-      stopTracking();
+      this.setStartStopButtonToStart();
+      this.stopTracking();
     }
     else {
-     setStartStopButtonToStop();
-     startTracking();
+     this.setStartStopButtonToStop();
+     this.startTracking();
     }
   }
 
@@ -129,6 +129,14 @@ class Map extends Component {
   }
 
   render() {
+    const mapOptions = {
+      scrollEnabled: true,
+    };
+
+    if (this.state.editing) {
+      mapOptions.scrollEnabled = false;
+      mapOptions.onPanDrag = e => this.onPress(e);
+    }
     return (
       <View style={styles.container}>
         <MapView
