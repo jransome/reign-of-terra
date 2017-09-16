@@ -33,8 +33,8 @@ class Map extends Component {
     super(props);
     this.state = {
       currentPosition: {
-        latitude: 51.5,
-        longitude: 0.12,
+        latitude: 51.5074,
+        longitude: 0.1278,
         latitudeDelta: 0,
         longitudeDelta: 0
       },
@@ -50,15 +50,15 @@ class Map extends Component {
   }
   watchID: ?number = null
   componentDidMount() {
-
+    var self = this;
     navigator.geolocation.getCurrentPosition(function(position){
-      this.updatePosition(position);
+      self.updatePosition(position);
     },
     (error) => alert(JSON.stringify(error)),
     ACCURACY_ARG);
 
     this.watchID = navigator.geolocation.watchPosition(function(position){
-      this.updatePosition(position);
+      self.updatePosition(position);
     },
     (error) => alert(JSON.stringify(error)),
     ACCURACY_ARG);
@@ -74,7 +74,7 @@ class Map extends Component {
       longitudeDelta: LONGITUDE_DELTA,
     };
     this.setState({currentPosition: region});
-    this.setState({markerPosition: initialRegion});
+    this.setState({markerPosition: region});
 
     if(this.state.startStop === true){
       this.logNewPosition(lat, long);
@@ -93,7 +93,7 @@ class Map extends Component {
   }
 
   startTracking() {
-    var currentPosition = this.state.initialPosition;
+    var currentPosition = this.state.currentPosition;
     var newPosition = {
       latitude: currentPosition.latitude -5 + Math.random() *10,
       longitude: currentPosition.longitude -5 + Math.random() *10
