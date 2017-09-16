@@ -3,7 +3,6 @@ import { AppRegistry } from 'react-native';
 import { StackNavigator } from 'react-navigation'
 
 import Map from './components/Map'
-import PolygonCreator from './components/PolygonCreator'
 
 import Login from './components/Login'
 
