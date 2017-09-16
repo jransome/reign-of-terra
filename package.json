@@ -24,7 +24,6 @@
 			"./assets/fonts/"
 		]
 	},
-
 	"jest": {
 		"preset": "react-native"
 	}
