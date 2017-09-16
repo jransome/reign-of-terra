@@ -4,7 +4,8 @@ import {
   StyleSheet,
   Text,
   View,
-  Button
+  Button,
+  Image
 } from 'react-native';
 
 class Login extends Component {
@@ -16,12 +17,13 @@ class Login extends Component {
     const { navigate } = this.props.navigation;
     return (
       <View style={styles.container}>
+      <Image style={styles.imagePosition} source={{uri: "https://i.stack.imgur.com/3kVAu.png"}} />
         <Text style={styles.name}>reign_of_terra</Text>
         <View style={styles.button}>
           <Button
             onPress={() => navigate('Map')}
             title="LOAD MAP"
-        />
+            />
         </View>
       </View>
     );
@@ -38,13 +40,17 @@ const styles = StyleSheet.create({
     fontSize: 55,
     textAlign: 'center',
     color: 'white',
-    top: 150,
+    top: 80,
+  },
+  imagePosition: {
+    width: 180,
+    height: 180,
   },
   button: {
     backgroundColor:'#a1b1cc',
     minHeight: 40,
     top: 250,
-    
+
   },
 });
 export default Login;
