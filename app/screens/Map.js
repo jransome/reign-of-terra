@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 
 import MapView from 'react-native-maps'
-import JourneyLine from '../components/JourneyLine/JourneyLine.js'
+import JourneyLine from '../components/JourneyLine'
 
 
 const {width, height} = Dimensions.get('window');
@@ -21,6 +21,8 @@ const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.922;
 const LONGITUDE_DELTA = (LATITUDE_DELTA * ASPECT_RATIO);
 const BUTTON_HEIGHT = 165;
+const ACCURACY_ARG = { enabledHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+
 
 class Map extends Component {
   static navigationOptions = {
@@ -29,11 +31,10 @@ class Map extends Component {
 
   constructor(props) {
     super(props);
-    this.navigate = this.navigate.bind(this)
     this.state = {
-      initialPosition: {
-        latitude: 0,
-        longitude: 0,
+      currentPosition: {
+        latitude: 51.5,
+        longitude: 0.12,
         latitudeDelta: 0,
         longitudeDelta: 0
       },
@@ -49,40 +50,44 @@ class Map extends Component {
   }
   watchID: ?number = null
   componentDidMount() {
-    navigator.geolocation.getCurrentPosition((position) => {
-      var lat = position.coords.latitude;
-      var long = position.coords.longitude;
-      var initialRegion = {
-        latitude: lat,
-        longitude: long,
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA,
-      };
-      this.setState({initialPosition: initialRegion});
-      this.setState({markerPosition: initialRegion});
+
+    navigator.geolocation.getCurrentPosition(function(position){
+      this.updatePosition(position);
     },
     (error) => alert(JSON.stringify(error)),
-    { enabledHighAccuracy: true, timeout: 20000, maximumAge: 1000 });
-    this.watchID = navigator.geolocation.watchPosition((position) => {
-        var lat = position.coords.latitude;
-        var long = position.coords.longitude;
-        var lastRegion = {
-          latitude: lat,
-          longitude: long,
-          latitudeDelta: LATITUDE_DELTA,
-          longitudeDelta: LONGITUDE_DELTA,
-        };
-        this.setState({initialPosition: lastRegion});
-        this.setState({markerPosition: lastRegion});
+    ACCURACY_ARG);
 
-        if (this.state.startStop === true) {
-          var newPosition = { latitude: lat, longitude: long}
-          var newPositions = this.state.linePositions.concat(newPosition);
-          this.setState({ linePositions: newPositions })
-        }
-
-     });
+    this.watchID = navigator.geolocation.watchPosition(function(position){
+      this.updatePosition(position);
+    },
+    (error) => alert(JSON.stringify(error)),
+    ACCURACY_ARG);
   };
+
+  updatePosition(position){
+    var lat = position.coords.latitude;
+    var long = position.coords.longitude;
+    var region = {
+      latitude: lat,
+      longitude: long,
+      latitudeDelta: LATITUDE_DELTA,
+      longitudeDelta: LONGITUDE_DELTA,
+    };
+    this.setState({currentPosition: region});
+    this.setState({markerPosition: initialRegion});
+
+    if(this.state.startStop === true){
+      this.logNewPosition(lat, long);
+    }
+  }
+
+  logNewPosition(lat, long){
+    var newPosition = { latitude: lat, longitude: long}
+    var newPositions = this.state.linePositions.concat(newPosition);
+    this.setState({ linePositions: newPositions })
+  }
+
+
   componentWillUnMount() {
     navigator.geolocation.clearWatch(this.watchID);
   }
@@ -124,12 +129,6 @@ class Map extends Component {
     }
   }
 
-  navigate(name) {
-    this.props.navigator.push({
-      name
-    })
-  }
-
   render() {
     const mapOptions = {
       scrollEnabled: true,
@@ -143,9 +142,10 @@ class Map extends Component {
       <View style={styles.container}>
         <MapView
           style={styles.map}
-          initialRegion={this.state.initialPosition}
+          initialRegion={this.state.currentPosition}
           zoomEnabled={true}
           maxZoomLevel={20}
+          minZoomLevel={7}
           showsMyLocationButton={true}
           showsUserLocation={true}>
           <MapView.Marker
