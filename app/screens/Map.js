@@ -11,6 +11,8 @@ import {
 } from 'react-native';
 
 import MapView from 'react-native-maps'
+import JourneyLine from '../components/JourneyLine/JourneyLine.js'
+
 
 const {width, height} = Dimensions.get('window');
 const SCREEN_HEIGHT = height;
@@ -42,7 +44,7 @@ class Map extends Component {
       startStop: false,
       startStopButtonStyle: {width: SCREEN_WIDTH, bottom: 0, top: SCREEN_HEIGHT-170, backgroundColor: 'green', alignItems: "center", justifyContent: 'center'},
       startStopButtonText: 'Start',
-      linePositions: [],
+      linePositions: [ { latitude: 51, longitude: 0.12 }, { latitude: 60, longitude: 5} ],
     };
   }
   watchID: ?number = null
@@ -88,8 +90,8 @@ class Map extends Component {
   startTracking() {
     var currentPosition = this.state.initialPosition;
     var newPosition = {
-      latitude: currentPosition.latitude,
-      longitude: currentPosition.longitude
+      latitude: currentPosition.latitude -5 + Math.random() *10,
+      longitude: currentPosition.longitude -5 + Math.random() *10
     }
     var newPositions = this.state.linePositions.concat(newPosition)
     this.setState({ linePositions: newPositions });
@@ -114,7 +116,7 @@ class Map extends Component {
   onStartStopButtonPress = () => {
     if (this.state.startStop === true) {
       this.setStartStopButtonToStart();
-      this.stopTracking();
+      // this.stopTracking();
     }
     else {
      this.setStartStopButtonToStop();
@@ -141,9 +143,8 @@ class Map extends Component {
       <View style={styles.container}>
         <MapView
           style={styles.map}
-          region={this.state.initialPosition}
+          initialRegion={this.state.initialPosition}
           zoomEnabled={true}
-          minZoomLevel={5}
           maxZoomLevel={20}
           showsMyLocationButton={true}
           showsUserLocation={true}>
@@ -155,13 +156,8 @@ class Map extends Component {
             </View>
           </MapView.Marker>
 
-          <MapView.Polyline
-          coordinates={this.state.linePositions}
-          color="black"
-          strokeWidth={10}
-          geodesic={true}
-          linecap="round"
-          />
+          <JourneyLine linePositions={this.state.linePositions}/>
+
         </MapView>
 
         <View style={this.state.startStopButtonStyle}>
