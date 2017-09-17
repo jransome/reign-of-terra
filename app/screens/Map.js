@@ -21,7 +21,11 @@ const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.922;
 const LONGITUDE_DELTA = (LATITUDE_DELTA * ASPECT_RATIO);
 const BUTTON_HEIGHT = 165;
-const ACCURACY_ARG = { enabledHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+const POSITION_OPTS = {
+  // enabledHighAccuracy: true,
+  timeout: 20000,
+  maximumAge: 1000
+}
 
 
 class Map extends Component {
@@ -45,87 +49,74 @@ class Map extends Component {
       startStop: false,
       startStopButtonStyle: {width: SCREEN_WIDTH, bottom: 0, top: SCREEN_HEIGHT-170, backgroundColor: 'green', alignItems: "center", justifyContent: 'center'},
       startStopButtonText: 'Start',
-      linePositions: [ { latitude: 51, longitude: 0.12 }, { latitude: 60, longitude: 5} ],
+      linePositions: [],
+      // linePositions: [ { latitude: 51, longitude: 0.12 }, { latitude: 60, longitude: 5} ],
     };
   }
   watchID: ?number = null
   componentDidMount() {
     var self = this;
-    navigator.geolocation.getCurrentPosition(function(position){
-      self.updatePosition(position);
-    },
-    (error) => alert(JSON.stringify(error)),
-    ACCURACY_ARG);
 
-    this.watchID = navigator.geolocation.watchPosition(function(position){
-      self.updatePosition(position);
-    },
-    (error) => alert(JSON.stringify(error)),
-    ACCURACY_ARG);
-  };
-
-  updatePosition(position){
-    var lat = position.coords.latitude;
-    var long = position.coords.longitude;
-    var region = {
-      latitude: lat,
-      longitude: long,
-      latitudeDelta: LATITUDE_DELTA,
-      longitudeDelta: LONGITUDE_DELTA,
+    function error(err) {
+      alert('ERROR(' + err.code + '): ' + err.message);
     };
-    this.setState({currentPosition: region});
-    this.setState({markerPosition: region});
 
-    if(this.state.startStop === true){
-      this.logNewPosition(lat, long);
+    function updatePosition(position){
+      var lat = position.coords.latitude;
+      var long = position.coords.longitude;
+      var region = {
+        latitude: lat,
+        longitude: long,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA,
+      };
+      self.setState({currentPosition: region});
+      self.setState({markerPosition: region});
+      if(self.state.startStop){
+        console.log("position logged")
+        logNewPosition(lat, long);
+      }
     }
-  }
 
-  logNewPosition(lat, long){
-    var newPosition = { latitude: lat, longitude: long}
-    var newPositions = this.state.linePositions.concat(newPosition);
-    this.setState({ linePositions: newPositions })
-  }
+    function logNewPosition(lat, long){
+      var newPosition = { latitude: lat, longitude: long}
+      var newPositions = self.state.linePositions.concat(newPosition);
+      self.setState({ linePositions: newPositions })
+      console.log(self.state.linePositions)
+    }
+
+    navigator.geolocation.getCurrentPosition(updatePosition, error, POSITION_OPTS);
+    this.watchID = navigator.geolocation.watchPosition(updatePosition, error, POSITION_OPTS);
+  };
 
 
   componentWillUnMount() {
     navigator.geolocation.clearWatch(this.watchID);
   }
 
-  startTracking() {
-    var currentPosition = this.state.currentPosition;
-    var newPosition = {
-      latitude: currentPosition.latitude -5 + Math.random() *10,
-      longitude: currentPosition.longitude -5 + Math.random() *10
-    }
-    var newPositions = this.state.linePositions.concat(newPosition)
-    this.setState({ linePositions: newPositions });
-  }
-
   stopTracking() {
-    this.setState({ linePositions: [] });
+    // this.setState({ linePositions: [] });
   }
 
   setStartStopButtonToStop() {
     this.setState({ startStopButtonStyle: {width: SCREEN_WIDTH, bottom: 0, top: SCREEN_HEIGHT-170, height: 100, backgroundColor: 'red', alignItems: "center", justifyContent: 'center'} });
     this.setState({ startStopButtonText: 'Stop' });
-    this.setState({ startStop: true });
   }
 
   setStartStopButtonToStart() {
     this.setState({ startStopButtonStyle: {width: SCREEN_WIDTH, bottom: 0, top: SCREEN_HEIGHT-170, height: 100, backgroundColor: 'green', alignItems: "center", justifyContent: 'center'} });
     this.setState({ startStopButtonText: 'Start' });
-    this.setState({ startStop: false });
   }
 
   onStartStopButtonPress = () => {
+    // this.logNewPosition(51 + Math.random() * 10, Math.random() * 10)
     if (this.state.startStop === true) {
       this.setStartStopButtonToStart();
-      // this.stopTracking();
+      this.setState({ startStop: false });
     }
     else {
-     this.setStartStopButtonToStop();
-     this.startTracking();
+      this.setState({ startStop: true });
+      this.setStartStopButtonToStop();
     }
   }
 
@@ -145,7 +136,7 @@ class Map extends Component {
           initialRegion={this.state.currentPosition}
           zoomEnabled={true}
           maxZoomLevel={20}
-          minZoomLevel={7}
+          minZoomLevel={1}
           showsMyLocationButton={true}
           showsUserLocation={true}>
           <MapView.Marker

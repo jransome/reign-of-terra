@@ -11,6 +11,10 @@ export default class JourneyLine extends Component {
     };
   }
 
+  componentWillUpdate(nextProps, nextState){
+    nextState.linePositions = nextProps.linePositions
+  }
+
   render() {
     return(
       <MapView.Polyline
