@@ -22,7 +22,7 @@ const LATITUDE_DELTA = 0.922;
 const LONGITUDE_DELTA = (LATITUDE_DELTA * ASPECT_RATIO);
 const BUTTON_HEIGHT = 165;
 const POSITION_OPTS = {
-  // enabledHighAccuracy: true,
+  enabledHighAccuracy: true,
   timeout: 20000,
   maximumAge: 1000
 }
@@ -73,13 +73,12 @@ class Map extends Component {
       self.setState({currentPosition: region});
       self.setState({markerPosition: region});
       if(self.state.startStop){
-        console.log("position logged")
         logNewPosition(lat, long);
       }
     }
 
     function logNewPosition(lat, long){
-      var newPosition = { latitude: lat, longitude: long}
+      var newPosition = { latitude: lat, longitude: long }
       var newPositions = self.state.linePositions.concat(newPosition);
       self.setState({ linePositions: newPositions })
       console.log(self.state.linePositions)
@@ -91,6 +90,7 @@ class Map extends Component {
 
 
   componentWillUnMount() {
+    console.log("unmount")
     navigator.geolocation.clearWatch(this.watchID);
   }
 
