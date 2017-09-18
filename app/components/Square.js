@@ -11,8 +11,10 @@ export default class Square extends Component {
       owner: null,
       color: 'rgba(120,50,200,0.3)',
       strokeColor: 'rgba(20,20,20,0.2)',
-      coords: props.coordinates,
+      namedCoords: props.coordinates,
+      arrayCoords: [],
     };
+    this.reformatCoords();
   }
 
   getOwner(owner, color) {
@@ -24,9 +26,18 @@ export default class Square extends Component {
     });
   }
 
+  reformatCoords() {
+    this.state.arrayCoords = [
+      this.state.namedCoords.bottomLeft,
+      this.state.namedCoords.topLeft,
+      this.state.namedCoords.topRight,
+      this.state.namedCoords.bottomRight
+    ];
+  }
+
   render() {
     return (
-      <MapView.Polygon coordinates={this.props.coordinates} fillColor={this.state.color} strokeColor={this.state.strokeColor}/>
+      <MapView.Polygon coordinates={this.state.arrayCoords} fillColor={this.state.color} strokeColor={this.state.strokeColor}/>
     )
   }
 }

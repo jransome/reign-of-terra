@@ -76,14 +76,14 @@ export default class Grid extends Component {
         bottomLeft: origin,
         topLeft: { latitude: origin.latitude + SQUARE_HEIGHT_WIDTH, longitude: origin.longitude },
         topRight: { latitude: origin.latitude + SQUARE_HEIGHT_WIDTH, longitude: origin.longitude + SQUARE_HEIGHT_WIDTH },
-        bottomRight: { latitude: origin.latitude, longitude: origin.longitude + SQUARE_HEIGHT_WIDTH }
+        bottomRight: { latitude: origin.latitude, longitude: origin.longitude + SQUARE_HEIGHT_WIDTH },
       };
     };
 
     // Start at bottom left origin and draw right-left, bottom to top
-    for (var i = 0; i < 2; i++) {
-      for (var j = 0; j < 1; j++) {
-        var origin = { latitude: i, longitude: j }
+    for (var i = 0; i < 6; i++) {
+      for (var j = 0; j < 6; j++) {
+        var origin = { latitude: BOUNDARIES.bottomLatitude + i * SQUARE_HEIGHT_WIDTH, longitude: BOUNDARIES.leftLongitude + j * SQUARE_HEIGHT_WIDTH }
         var newSquare = generateSquareCoordsFromOrigin(origin)
         this.state.grid.push(newSquare);
       }
@@ -98,9 +98,7 @@ export default class Grid extends Component {
       return jsxArray;
     }
 
-    console.log(generateGridJsx(this.state.grid));
-
-    console.log(generateGridJsx(squareAry));
+    this.state.gridJsx = generateGridJsx(this.state.grid);
 
   }
 
@@ -111,7 +109,7 @@ export default class Grid extends Component {
   }
 
   render() {
-
+    console.log(this.state.gridJsx);
     return <View>{this.state.gridJsx}</View>
   }
 }
