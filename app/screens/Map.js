@@ -12,7 +12,7 @@ import {
 
 import MapView from 'react-native-maps'
 import JourneyLine from '../components/JourneyLine'
-
+import Grid from '../components/Grid'
 
 const {width, height} = Dimensions.get('window');
 const SCREEN_HEIGHT = height;
@@ -147,6 +147,7 @@ class Map extends Component {
             </View>
           </MapView.Marker>
 
+          <Grid/>
           <JourneyLine linePositions={this.state.linePositions}/>
 
         </MapView>

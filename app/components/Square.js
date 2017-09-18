@@ -1,11 +1,6 @@
 /* jshint esversion: 6 */
 import React, { Component } from 'react';
-import {
-  AppRegistry,
-  Text,
-  View,
-  Button
-} from 'react-native';
+import MapView from 'react-native-maps';
 
 export default class Square extends Component {
 
@@ -13,10 +8,12 @@ export default class Square extends Component {
     super(props);
     this.state = {
       owner: null,
-      color: '#f4a742',
-      coords: this.props.coords,
+      color: 'rgba(120,50,200,0.3)',
+      strokeColor: 'rgba(20,20,20,0.2)',
+      coords: props.coordinates,
     };
   }
+
   getOwner(owner, color) {
     this.setState(previous => {
       return {
@@ -25,9 +22,10 @@ export default class Square extends Component {
       }
     });
   }
+
   render() {
-    return {
-      <MapView.Polygon coordinates={this.props.coords} fillColor={this.state.color} />
-    };
+    return (
+      <MapView.Polygon coordinates={this.props.coordinates} fillColor={this.state.color} strokeColor={this.state.strokeColor}/>
+    )
   }
 }

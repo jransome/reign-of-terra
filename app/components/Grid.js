@@ -1,12 +1,7 @@
 /* jshint esversion: 6 */
 import React, { Component } from 'react';
-import {
-  AppRegistry,
-  Text,
-  View,
-  Button
-} from 'react-native';
-import Square from 'components/Square.js';
+import MapView from 'react-native-maps';
+import Square from './Square.js';
 
 const BOUNDARIES = {
   topLatitude: 51.580456223295826,
@@ -15,8 +10,26 @@ const BOUNDARIES = {
   rightLongitude: 0.18402099859372356,
 };
 
-let dx = 0.3;
-let dy = 0.3;
+let dx = 0.4;
+let dy = 0.4;
+
+let fakeCoordA = {
+  latitude: 52,
+  longitude: 0,
+};
+
+let fakeCoordB = {
+  latitude: 51,
+  longitude: 0,
+};
+
+let fakeCoordC = {
+  latitude: 51,
+  longitude: 1,
+};
+
+let fakeArray = [fakeCoordA, fakeCoordB, fakeCoordC];
+
 
 export default class Grid extends Component {
   constructor(props) {
@@ -30,14 +43,13 @@ export default class Grid extends Component {
 
   }
   updateGrid() {
-    this.setState(previous => (
-
-    ));
+    this.setState(previous => ({}))
   }
-  render() {
-    // TODO: loop through list of squares and render each one
-    return {
 
-    }
+
+  render() {
+    return (
+      <Square coordinates={fakeArray} fillColor={"blue"}/>
+    )
   }
 }
