@@ -14,6 +14,8 @@ import {
   TouchableOpacity
 } from 'react-native';
 
+const SQUARE_HEIGHT_WIDTH = 0.1;
+
 const BOUNDARIES = {
   topLatitude: 51.580456223295826,
   bottomLatitude: 51.4445655655249,
@@ -61,25 +63,45 @@ export default class Grid extends Component {
     super(props);
     this.state = {
       grid: [],
+      gridJsx: [],
       currentSquare: null,
     }
     this.createGrid();
   }
 
   createGrid() {
-    let mySquare = {
-      topLeft: 0,
-      bottomLeft: 0,
-      bottomRight: 0,
-      topRight: 0,
-    }
 
-    for (var i=0; i < 34; i++) {
-      for (var j = 0; j < 34; j++) {
-        mySquare.topLeft = { BOUNDARIES.topLatitude + i * Square.SQUARE_HEIGHT_WIDTH, BOUNDARIES.leftLongitude + j * SQUARE_HEIGHT_WIDTH };
-        console.log(mySquare.topLeft);
+    function generateSquareCoordsFromOrigin(origin){
+      return newSquare = {
+        bottomLeft: origin,
+        topLeft: { latitude: origin.latitude + SQUARE_HEIGHT_WIDTH, longitude: origin.longitude },
+        topRight: { latitude: origin.latitude + SQUARE_HEIGHT_WIDTH, longitude: origin.longitude + SQUARE_HEIGHT_WIDTH },
+        bottomRight: { latitude: origin.latitude, longitude: origin.longitude + SQUARE_HEIGHT_WIDTH }
+      };
+    };
+
+    // Start at bottom left origin and draw right-left, bottom to top
+    for (var i = 0; i < 2; i++) {
+      for (var j = 0; j < 1; j++) {
+        var origin = { latitude: i, longitude: j }
+        var newSquare = generateSquareCoordsFromOrigin(origin)
+        this.state.grid.push(newSquare);
       }
     }
+
+
+    function generateGridJsx(grid){
+      var jsxArray = []
+      grid.map(function(squareCoords){
+        jsxArray.push(<Square coordinates={squareCoords} fillColor={"blue"}/>);
+      })
+      return jsxArray;
+    }
+
+    console.log(generateGridJsx(this.state.grid));
+
+    console.log(generateGridJsx(squareAry));
+
   }
 
   updateGrid() {
@@ -89,11 +111,7 @@ export default class Grid extends Component {
   }
 
   render() {
-    // var testAry = ['ben', 'james', 'ryan', 'yulia']
-    var grid = squareAry.map(function(squareCoords){
-      return <Square coordinates={squareCoords} fillColor={"blue"}/>;
-    })
-    console.log(grid);
-    return <View>{grid}</View>
+
+    return <View>{this.state.gridJsx}</View>
   }
 }
