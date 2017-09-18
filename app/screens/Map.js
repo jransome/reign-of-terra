@@ -1,3 +1,4 @@
+'use strict'
 import React, { Component } from 'react';
 import * as firebase from 'firebase';
 import {
@@ -35,7 +36,6 @@ const POSITION_OPTS = {
   maximumAge: 1000
 }
 
-
 class Map extends Component {
   static navigationOptions = {
     title: 'Map',
@@ -43,8 +43,6 @@ class Map extends Component {
 
   constructor(props) {
     super(props);
-    let ds = new JourneyLine.DataSource({rowHasChanged:(r1, r2) => r1 !== r2 });
-
     this.state = {
       currentPosition: {
         latitude: 51.5074,
@@ -56,29 +54,39 @@ class Map extends Component {
         latitude: 0,
         longitude: 0
       },
-      routeDataSource: ds,
-
       startStop: false,
       startStopButtonStyle: {width: SCREEN_WIDTH, bottom: 0, top: SCREEN_HEIGHT-170, backgroundColor: 'green', alignItems: "center", justifyContent: 'center'},
       startStopButtonText: 'Start',
-      linePositions: [],
-      // linePositions: [ { latitude: 51, longitude: 0.12 }, { latitude: 60, longitude: 5} ],
+      polylineArray: []
     };
+
+    this.routesRef = this.getRef().child('routes');
+  }
+
+  getRef() {
+    return firebaseApp.database().ref();
+  }
+
+  getRoutes(routesRef){
+    var self = this;
+    routesRef.on ('value', (snap) => {
+      let polylinesToRender = []
+      snap.forEach( (child) => {
+        polylinesToRender.push( <JourneyLine linePositions={child.val()} /> );
+      });
+      self.setState({
+        polylineArray: polylinesToRender
+      });
+    });
   }
 
   componentWillMount(){
-    this.getRoutes();
-  }
-
-  getRoutes(){
-    let routes = [{"latitude": 51, "longitude": 0.12}, {"latitude": 51, "longitude": 0.15}, {"latitude": 51, "longitude": 0.18}];
-    this.setState({
-      routeDataSource: this.state.routeDataSource.cloneWithRows(routes)
-    });
+    this.getRoutes(this.routesRef);
   }
 
   watchID: ?number = null
   componentDidMount() {
+    this.getRoutes(this.routesRef);
     var self = this;
 
     function error(err) {
@@ -171,11 +179,7 @@ class Map extends Component {
             </View>
           </MapView.Marker>
 
-          <JourneyLine linePositions={this.state.linePositions}
-          DataSource={this.state.routeDataSource}
-          viewRoutes={this.state.viewRoutes}
-          />
-
+          { this.state.polylineArray }
         </MapView>
 
         <View style={this.state.startStopButtonStyle}>
