@@ -63,14 +63,29 @@ export default class Grid extends Component {
       grid: [],
       currentSquare: null,
     }
+    this.createGrid();
   }
 
   createGrid() {
+    let mySquare = {
+      topLeft: 0,
+      bottomLeft: 0,
+      bottomRight: 0,
+      topRight: 0,
+    }
 
+    for (var i=0; i < 34; i++) {
+      for (var j = 0; j < 34; j++) {
+        mySquare.topLeft = { BOUNDARIES.topLatitude + i * Square.SQUARE_HEIGHT_WIDTH, BOUNDARIES.leftLongitude + j * SQUARE_HEIGHT_WIDTH };
+        console.log(mySquare.topLeft);
+      }
+    }
   }
 
   updateGrid() {
-    this.setState(previous => ({}))
+    this.setState(previous => ({
+
+    }))
   }
 
   render() {
