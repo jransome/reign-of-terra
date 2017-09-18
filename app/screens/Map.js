@@ -1,4 +1,6 @@
+'use strict'
 import React, { Component } from 'react';
+import * as firebase from 'firebase';
 import {
   AppRegistry,
   StyleSheet,
@@ -13,6 +15,13 @@ import {
 import MapView from 'react-native-maps'
 import JourneyLine from '../components/JourneyLine'
 
+const firebaseConfig = {
+  apiKey: "AIzaSyDp8aMYHboDQ5mgbWUzyJ8plmrfV5jDKSk",
+   authDomain: "reign-of-terra-a496c.firebaseapp.com",
+   databaseURL: "https://reign-of-terra-a496c.firebaseio.com",
+   storageBucket: "reign-of-terra-a496c.appspot.com"
+};
+const firebaseApp = firebase.initializeApp(firebaseConfig);
 
 const {width, height} = Dimensions.get('window');
 const SCREEN_HEIGHT = height;
@@ -26,7 +35,6 @@ const POSITION_OPTS = {
   timeout: 20000,
   maximumAge: 1000
 }
-
 
 class Map extends Component {
   static navigationOptions = {
@@ -49,12 +57,36 @@ class Map extends Component {
       startStop: false,
       startStopButtonStyle: {width: SCREEN_WIDTH, bottom: 0, top: SCREEN_HEIGHT-170, backgroundColor: 'green', alignItems: "center", justifyContent: 'center'},
       startStopButtonText: 'Start',
-      linePositions: [],
-      // linePositions: [ { latitude: 51, longitude: 0.12 }, { latitude: 60, longitude: 5} ],
+      polylineArray: []
     };
+
+    this.routesRef = this.getRef().child('routes');
   }
+
+  getRef() {
+    return firebaseApp.database().ref();
+  }
+
+  getRoutes(routesRef){
+    var self = this;
+    routesRef.on ('value', (snap) => {
+      let polylinesToRender = []
+      snap.forEach( (child) => {
+        polylinesToRender.push( <JourneyLine linePositions={child.val()} /> );
+      });
+      self.setState({
+        polylineArray: polylinesToRender
+      });
+    });
+  }
+
+  componentWillMount(){
+    this.getRoutes(this.routesRef);
+  }
+
   watchID: ?number = null
   componentDidMount() {
+    this.getRoutes(this.routesRef);
     var self = this;
 
     function error(err) {
@@ -147,8 +179,7 @@ class Map extends Component {
             </View>
           </MapView.Marker>
 
-          <JourneyLine linePositions={this.state.linePositions}/>
-
+          { this.state.polylineArray }
         </MapView>
 
         <View style={this.state.startStopButtonStyle}>
