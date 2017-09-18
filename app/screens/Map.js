@@ -11,6 +11,8 @@ import {
 } from 'react-native';
 
 import MapView from 'react-native-maps'
+import JourneyLine from '../components/JourneyLine'
+
 
 const {width, height} = Dimensions.get('window');
 const SCREEN_HEIGHT = height;
@@ -18,6 +20,13 @@ const SCREEN_WIDTH = width;
 const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.922;
 const LONGITUDE_DELTA = (LATITUDE_DELTA * ASPECT_RATIO);
+const BUTTON_HEIGHT = 165;
+const POSITION_OPTS = {
+  enabledHighAccuracy: true,
+  timeout: 20000,
+  maximumAge: 1000
+}
+
 
 class Map extends Component {
   static navigationOptions = {
@@ -26,11 +35,10 @@ class Map extends Component {
 
   constructor(props) {
     super(props);
-    this.navigate = this.navigate.bind(this)
     this.state = {
-      initialPosition: {
-        latitude: 0,
-        longitude: 0,
+      currentPosition: {
+        latitude: 51.5074,
+        longitude: 0.1278,
         latitudeDelta: 0,
         longitudeDelta: 0
       },
@@ -39,104 +47,96 @@ class Map extends Component {
         longitude: 0
       },
       startStop: false,
-      startStopButtonStyle: {width: SCREEN_WIDTH, bottom: 0, top: SCREEN_HEIGHT-165, backgroundColor: 'green', alignItems: "center", justifyContent: 'center'},
+      startStopButtonStyle: {width: SCREEN_WIDTH, bottom: 0, top: SCREEN_HEIGHT-170, backgroundColor: 'green', alignItems: "center", justifyContent: 'center'},
       startStopButtonText: 'Start',
-      linePositions:
-      [  {latitude: 52, longitude: 1}, {latitude: 37, longitude: -121} ]
+      linePositions: [],
+      // linePositions: [ { latitude: 51, longitude: 0.12 }, { latitude: 60, longitude: 5} ],
     };
   }
   watchID: ?number = null
   componentDidMount() {
-    navigator.geolocation.getCurrentPosition((position) => {
+    var self = this;
+
+    function error(err) {
+      alert('ERROR(' + err.code + '): ' + err.message);
+    };
+
+    function updatePosition(position){
       var lat = position.coords.latitude;
       var long = position.coords.longitude;
-      var initialRegion = {
+      var region = {
         latitude: lat,
         longitude: long,
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA,
       };
-      this.setState({initialPosition: initialRegion});
-      this.setState({markerPosition: initialRegion});
-    },
-    (error) => alert(JSON.stringify(error)),
-    { enabledHighAccuracy: true, timeout: 20000, maximumAge: 1000 });
-    this.watchID = navigator.geolocation.watchPosition((position) => {
-        var lat = position.coords.latitude;
-        var long = position.coords.longitude;
-        var lastRegion = {
-          latitude: lat,
-          longitude: long,
-          latitudeDelta: LATITUDE_DELTA,
-          longitudeDelta: LONGITUDE_DELTA,
-        };
-        this.setState({initialPosition: lastRegion});
-        this.setState({markerPosition: lastRegion});
+      self.setState({currentPosition: region});
+      self.setState({markerPosition: region});
+      if(self.state.startStop){
+        logNewPosition(lat, long);
+      }
+    }
 
-        // alert("Tracking")
-        if (this.state.startStop === true) {
-          alert("Tracking")
-          var newPosition = { latitude: lat + 10, longitude: long +10 }
-          var newPositions = this.state.linePositions.concat(newPosition);
-          this.setState({ linePositions: newPositions })
-        }
+    function logNewPosition(lat, long){
+      var newPosition = { latitude: lat, longitude: long }
+      var newPositions = self.state.linePositions.concat(newPosition);
+      self.setState({ linePositions: newPositions })
+      console.log(self.state.linePositions)
+    }
 
-     });
+    navigator.geolocation.getCurrentPosition(updatePosition, error, POSITION_OPTS);
+    this.watchID = navigator.geolocation.watchPosition(updatePosition, error, POSITION_OPTS);
   };
+
+
   componentWillUnMount() {
+    console.log("unmount")
     navigator.geolocation.clearWatch(this.watchID);
   }
 
-  onStartStopButtonPress = () => {
-    if (this.state.startStop === true) {
-
-      this.setState({ startStopButtonStyle: {width: SCREEN_WIDTH, bottom: 0, top: SCREEN_HEIGHT-165, height: 100, backgroundColor: 'green', alignItems: "center", justifyContent: 'center'} });
-      this.setState({ startStopButtonText: 'Start' });
-      this.setState({ startStop: false });
-      //stop drawing line
-      // this.setState({ linePositions: [] });
-      var currentPosition = this.state.initialPosition;
-      var newPosition = {
-        latitude: currentPosition.latitude - Math.random() * 10,
-        longitude: currentPosition.longitude + Math.random() * 10
-      }
-      var test = this.state.linePositions.concat(newPosition)
-      console.log(test)
-
-      this.setState({ linePositions: test });
-    }
-    else {
-     this.setState({ startStopButtonStyle: {width: SCREEN_WIDTH, bottom: 0, top: SCREEN_HEIGHT-165, height: 100, backgroundColor: 'red', alignItems: "center", justifyContent: 'center'} });
-     this.setState({ startStopButtonText: 'Stop' });
-     this.setState({ startStop: true });
-
-     // start position
-     var currentPosition = this.state.initialPosition;
-     var newPosition = {
-       latitude: currentPosition.latitude + Math.random(),
-       longitude: currentPosition.longitude + Math.random()
-     }
-     var test = this.state.linePositions.concat(newPosition)
-     console.log(test)
-     this.setState({ linePositions: test });
-    }
+  stopTracking() {
+    // this.setState({ linePositions: [] });
   }
 
-  navigate(name) {
-    this.props.navigator.push({
-      name
-    })
+  setStartStopButtonToStop() {
+    this.setState({ startStopButtonStyle: {width: SCREEN_WIDTH, bottom: 0, top: SCREEN_HEIGHT-170, height: 100, backgroundColor: 'red', alignItems: "center", justifyContent: 'center'} });
+    this.setState({ startStopButtonText: 'Stop' });
+  }
+
+  setStartStopButtonToStart() {
+    this.setState({ startStopButtonStyle: {width: SCREEN_WIDTH, bottom: 0, top: SCREEN_HEIGHT-170, height: 100, backgroundColor: 'green', alignItems: "center", justifyContent: 'center'} });
+    this.setState({ startStopButtonText: 'Start' });
+  }
+
+  onStartStopButtonPress = () => {
+    // this.logNewPosition(51 + Math.random() * 10, Math.random() * 10)
+    if (this.state.startStop === true) {
+      this.setStartStopButtonToStart();
+      this.setState({ startStop: false });
+    }
+    else {
+      this.setState({ startStop: true });
+      this.setStartStopButtonToStop();
+    }
   }
 
   render() {
+    const mapOptions = {
+      scrollEnabled: true,
+    };
+
+    if (this.state.editing) {
+      mapOptions.scrollEnabled = false;
+      mapOptions.onPanDrag = e => this.onPress(e);
+    }
     return (
       <View style={styles.container}>
         <MapView
           style={styles.map}
-          region={this.state.initialPosition}
+          initialRegion={this.state.currentPosition}
           zoomEnabled={true}
-          minZoomLevel={5}
           maxZoomLevel={20}
+          minZoomLevel={1}
           showsMyLocationButton={true}
           showsUserLocation={true}>
           <MapView.Marker
@@ -147,11 +147,8 @@ class Map extends Component {
             </View>
           </MapView.Marker>
 
-          <MapView.Polyline
-          coordinates={this.state.linePositions}
-          color="black"
-          strokeWidth={10}
-          />
+          <JourneyLine linePositions={this.state.linePositions}/>
+
         </MapView>
 
         <View style={this.state.startStopButtonStyle}>
