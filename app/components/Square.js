@@ -2,6 +2,8 @@
 import React, { Component } from 'react';
 import MapView from 'react-native-maps';
 
+const SQUARE_HEIGHT_WIDTH = 0.1;
+
 export default class Square extends Component {
 
   constructor(props) {
