@@ -16,10 +16,10 @@ import MapView from 'react-native-maps'
 import JourneyLine from '../components/JourneyLine'
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDp8aMYHboDQ5mgbWUzyJ8plmrfV5jDKSk",
-   authDomain: "reign-of-terra-a496c.firebaseapp.com",
-   databaseURL: "https://reign-of-terra-a496c.firebaseio.com",
-   storageBucket: "reign-of-terra-a496c.appspot.com"
+  apiKey: "AIzaSyCO9wrOCauga078hzCPf29q5a_hq1HPvVE",
+  authDomain: "reign-of-terra-71a8a.firebaseapp.com",
+  databaseURL: "https://reign-of-terra-71a8a.firebaseio.com",
+  storageBucket: "reign-of-terra-71a8a.appspot.com"
 };
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 
@@ -57,7 +57,8 @@ class Map extends Component {
       startStop: false,
       startStopButtonStyle: {width: SCREEN_WIDTH, bottom: 0, top: SCREEN_HEIGHT-170, backgroundColor: 'green', alignItems: "center", justifyContent: 'center'},
       startStopButtonText: 'Start',
-      polylineArray: []
+      polylineArray: [],
+      linePositions: []
     };
 
     this.routesRef = this.getRef().child('routes');
@@ -80,11 +81,20 @@ class Map extends Component {
     });
   }
 
+  addRoute(routesRef){
+    routesRef.push(this.linePositions);
+    var position = [{"latitude": this.state.currentPosition.latitude, "longitude": this.state.currentPosition.longitude}];
+    this.setState({
+      linePositions: position
+    });
+  };
+
   componentWillMount(){
-    this.getRoutes(this.routesRef);
+    // this.getRoutes(this.routesRef);
   }
 
   watchID: ?number = null
+
   componentDidMount() {
     this.getRoutes(this.routesRef);
     var self = this;
@@ -145,6 +155,7 @@ class Map extends Component {
     if (this.state.startStop === true) {
       this.setStartStopButtonToStart();
       this.setState({ startStop: false });
+      this.addRoute(this.routesRef);
     }
     else {
       this.setState({ startStop: true });
@@ -178,7 +189,7 @@ class Map extends Component {
               </View>
             </View>
           </MapView.Marker>
-
+          <JourneyLine linePositions={this.state.linePositions} />
           { this.state.polylineArray }
         </MapView>
 
