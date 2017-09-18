@@ -14,6 +14,7 @@ export default class Square extends Component {
     this.state = {
       owner: null,
       color: '#f4a742',
+      coords: this.props.coords,
     };
   }
   getOwner(owner, color) {
@@ -26,7 +27,7 @@ export default class Square extends Component {
   }
   render() {
     return {
-      <MapView.Polygon coordinates={this.props.coords} fillColor={this.state.color}/>
+      <MapView.Polygon coordinates={this.props.coords} fillColor={this.state.color} />
     };
   }
 }
