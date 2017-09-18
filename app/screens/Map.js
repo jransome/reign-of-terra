@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import * as firebase from 'firebase';
 import {
   AppRegistry,
   StyleSheet,
@@ -13,6 +14,13 @@ import {
 import MapView from 'react-native-maps'
 import JourneyLine from '../components/JourneyLine'
 
+const firebaseConfig = {
+  apiKey: "AIzaSyDp8aMYHboDQ5mgbWUzyJ8plmrfV5jDKSk",
+   authDomain: "reign-of-terra-a496c.firebaseapp.com",
+   databaseURL: "https://reign-of-terra-a496c.firebaseio.com",
+   storageBucket: "reign-of-terra-a496c.appspot.com"
+};
+const firebaseApp = firebase.initializeApp(firebaseConfig);
 
 const {width, height} = Dimensions.get('window');
 const SCREEN_HEIGHT = height;
@@ -35,6 +43,8 @@ class Map extends Component {
 
   constructor(props) {
     super(props);
+    let ds = new JourneyLine.DataSource({rowHasChanged:(r1, r2) => r1 !== r2 });
+
     this.state = {
       currentPosition: {
         latitude: 51.5074,
@@ -46,6 +56,8 @@ class Map extends Component {
         latitude: 0,
         longitude: 0
       },
+      routeDataSource: ds,
+
       startStop: false,
       startStopButtonStyle: {width: SCREEN_WIDTH, bottom: 0, top: SCREEN_HEIGHT-170, backgroundColor: 'green', alignItems: "center", justifyContent: 'center'},
       startStopButtonText: 'Start',
@@ -53,6 +65,18 @@ class Map extends Component {
       // linePositions: [ { latitude: 51, longitude: 0.12 }, { latitude: 60, longitude: 5} ],
     };
   }
+
+  componentWillMount(){
+    this.getRoutes();
+  }
+
+  getRoutes(){
+    let routes = [{"latitude": 51, "longitude": 0.12}, {"latitude": 51, "longitude": 0.15}, {"latitude": 51, "longitude": 0.18}];
+    this.setState({
+      routeDataSource: this.state.routeDataSource.cloneWithRows(routes)
+    });
+  }
+
   watchID: ?number = null
   componentDidMount() {
     var self = this;
@@ -147,7 +171,10 @@ class Map extends Component {
             </View>
           </MapView.Marker>
 
-          <JourneyLine linePositions={this.state.linePositions}/>
+          <JourneyLine linePositions={this.state.linePositions}
+          DataSource={this.state.routeDataSource}
+          viewRoutes={this.state.viewRoutes}
+          />
 
         </MapView>
 
