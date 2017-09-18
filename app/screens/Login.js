@@ -10,21 +10,31 @@ import {
 
 class Login extends Component {
   static navigationOptions = {
-    title: 'Welcome',
+    header: null
   };
 
   render() {
     const { navigate } = this.props.navigation;
     return (
       <View style={styles.container}>
-      <Image style={styles.imagePosition} source={{uri: "https://i.stack.imgur.com/3kVAu.png"}} />
+
+        <View style={styles.logo}>
         <Text style={styles.name}>reign_of_terra</Text>
-        <View style={styles.button}>
-          <Button
+          <Image style={styles.imagePosition} source={{uri: "https://i.stack.imgur.com/3kVAu.png"}} />
+        </View>
+
+        <View style={styles.loginFields}>
+        </View>
+
+        <View style={styles.submitButtons}>
+          <View style={styles.button}>
+            <Button
             onPress={() => navigate('Map')}
             title="LOAD MAP"
             />
+          </View>
         </View>
+
       </View>
     );
   }
@@ -35,11 +45,23 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor:'#2f63b7',
   },
+  logo:{
+    flex: 0.3,
+    backgroundColor:'red',
+  },
+  loginFields:{
+    flex: 0.2,
+    backgroundColor:'green',
+  },
+  submitButtons:{
+    flex: 0.5,
+    backgroundColor:'yellow',
+  },
   name: {
     fontFamily: "SnellRoundhand-Bold",
     fontSize: 55,
     textAlign: 'center',
-    color: 'white',
+    color: 'blue',
     top: 80,
   },
   imagePosition: {
@@ -49,7 +71,7 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor:'#a1b1cc',
     minHeight: 40,
-    top: 250,
+    top: 200,
 
   },
 });
