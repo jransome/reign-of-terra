@@ -1,3 +1,11 @@
-{
-  "routes": [{"latitude": 51, "longitude": 0.12}, {"latitude": 51, "longitude": 0.15}, {"latitude": 51, "longitude": 0.18}]
+{  "territories": {
+  "1": {
+      "name": "spitalfieldsmarket",
+      "color": "white",
+      "coordinates" : [{"latitude": 51.520220, "longitude": -0.077891},
+                        {"latitude": 51.510164, "longitude": -0.077891},
+                        {"latitude": 51.510164, "longitude": -0.077449},
+                        {"latitude": 51.520220, "longitude": -0.077449}]
+    }
+  }
 }
