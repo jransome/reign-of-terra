@@ -69,17 +69,19 @@ class Map extends Component {
   }
 
   updateColorData(territoryId, color) {
-    firebaseApp.database().ref('territories/' + territoriesId).update({
+    // this updates the database and reloads all the data
+    firebaseApp.database().ref('territories/' + territoryId).update({
       color: color
     });
+    this.getData(this.dbRef);
   }
 
-  getRoutes(dbRef){
+  getData(dbRef){
     var self = this;
     dbRef.on ('value', (snap) => {
       let territories = []
       snap.forEach( (child) => {
-        var color = "rgba(255,255,255,0.5)"//child.val().color;
+        var color = child.val().color;
         var coordinates = child.val().coordinates;
         territories.push(  <MapView.Polygon coordinates={coordinates} fillColor={color}/> );
       });
@@ -98,13 +100,13 @@ class Map extends Component {
   };
 
   componentWillMount(){
-    // this.getRoutes(this.routesRef);
+    // this.getData(this.routesRef);
   }
 
   watchID: ?number = null
 
   componentDidMount() {
-    this.getRoutes(this.dbRef);
+    this.getData(this.dbRef);
     var self = this;
 
     function error(err) {
@@ -163,11 +165,12 @@ class Map extends Component {
     if (this.state.startStop === true) {
       this.setStartStopButtonToStart();
       this.setState({ startStop: false });
-      this.addRoute(this.routesRef);
+      //this.addRoute(this.routesRef);
     }
     else {
       this.setState({ startStop: true });
       this.setStartStopButtonToStop();
+      this.updateColorData("1", "red");
     }
   }
 
