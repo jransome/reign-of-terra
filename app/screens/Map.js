@@ -61,16 +61,22 @@ class Map extends Component {
       linePositions: []
     };
 
-    this.routesRef = this.getRef().child('territories');
+    this.dbRef = this.getRef().child('territories');
   }
 
   getRef() {
     return firebaseApp.database().ref();
   }
 
-  getRoutes(routesRef){
+  updateColorData(territoryId, color) {
+    firebaseApp.database().ref('territories/' + territoriesId).update({
+      color: color
+    });
+  }
+
+  getRoutes(dbRef){
     var self = this;
-    routesRef.on ('value', (snap) => {
+    dbRef.on ('value', (snap) => {
       let territories = []
       snap.forEach( (child) => {
         var color = "rgba(255,255,255,0.5)"//child.val().color;
@@ -83,8 +89,8 @@ class Map extends Component {
     });
   }
 
-  addRoute(routesRef){
-    routesRef.push(this.linePositions);
+  addRoute(dbRef){
+    dbRef.push(this.linePositions);
     var position = [{"latitude": this.state.currentPosition.latitude, "longitude": this.state.currentPosition.longitude}];
     this.setState({
       linePositions: position
@@ -98,7 +104,7 @@ class Map extends Component {
   watchID: ?number = null
 
   componentDidMount() {
-    this.getRoutes(this.routesRef);
+    this.getRoutes(this.dbRef);
     var self = this;
 
     function error(err) {

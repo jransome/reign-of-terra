@@ -1,23 +1,11 @@
-{  "territories":
-  {
-    "makeracademy" : {
-      "color" : "white",
-      "coordinates" :[{"latitude": 51.5175, "longitude": -0.073774}, {"latitude": 51.5175, "longitude": -0.073608}, {"latitude": 51.517538, "longitude": -0.073774}, {"latitude": 51.517129, "longitude": -0.073608}]
-    },
-    "spitafieldsmarket" : {
-      "color" : "white",
+{  "territories": {
+  "1": {
+      "name": "spitalfieldsmarket",
+      "color": "white",
       "coordinates" : [{"latitude": 51.520220, "longitude": -0.077891},
                         {"latitude": 51.510164, "longitude": -0.077891},
                         {"latitude": 51.510164, "longitude": -0.077449},
                         {"latitude": 51.520220, "longitude": -0.077449}]
-    },
-    "liverpoolstreetstation" : {
-      "color" : "white",
-      "coordinates" : [{"latitude": 51.517774, "longitude": -0.084457}, {"latitude": 51.516491, "longitude": -0.084457}, {"latitude": 51.516138, "longitude": -0.084457}, {"latitude": 51.516138, "longitude": -0.084457}]
-    },
-    "bricklanemarket" : {
-      "color" : "white",
-      "coordinates" : [{"latitude": 51.522114, "longitude": -0.072698}, {"latitude": 51.522114, "longitude": -0.072551}, {"latitude": 51.518717, "longitude": -0.072551}, {"latitude": 51.522114, "longitude": -0.072551}]
     }
   }
 }
