@@ -11,7 +11,7 @@ export default class User extends Component {
       const { navigate } = this.props.navigation;
     return (
       <View>
-      <Text>PICK POLYGON COLOR</Text>
+      <Text style={styles.heading}>PICK POLYGON COLOR</Text>
         <ColorPicker />
         <View style={styles.button}>
           <Button
@@ -29,10 +29,15 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor:'#2f63b7',
   },
-
+  heading: {
+    top: 20,
+    color: "blue",
+    fontSize: 25,
+    textAlign: "center"
+  },
   button: {
     backgroundColor:'#a1b1cc',
     minHeight: 40,
-    top: 200,
+    top: 150,
   },
 });
