@@ -1,0 +1,11 @@
+{  "territories": {
+  "1": {
+      "name": "spitalfieldsmarket",
+      "color": "white",
+      "coordinates" : [{"latitude": 51.520220, "longitude": -0.077891},
+                        {"latitude": 51.510164, "longitude": -0.077891},
+                        {"latitude": 51.510164, "longitude": -0.077449},
+                        {"latitude": 51.520220, "longitude": -0.077449}]
+    }
+  }
+}

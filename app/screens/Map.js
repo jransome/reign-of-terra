@@ -1,4 +1,6 @@
+'use strict'
 import React, { Component } from 'react';
+import * as firebase from 'firebase';
 import {
   AppRegistry,
   StyleSheet,
@@ -14,6 +16,14 @@ import MapView from 'react-native-maps'
 import JourneyLine from '../components/JourneyLine'
 import Grid from '../components/Grid'
 
+const firebaseConfig = {
+  apiKey: "AIzaSyCO9wrOCauga078hzCPf29q5a_hq1HPvVE",
+  authDomain: "reign-of-terra-71a8a.firebaseapp.com",
+  databaseURL: "https://reign-of-terra-71a8a.firebaseio.com",
+  storageBucket: "reign-of-terra-71a8a.appspot.com"
+};
+const firebaseApp = firebase.initializeApp(firebaseConfig);
+
 const {width, height} = Dimensions.get('window');
 const SCREEN_HEIGHT = height;
 const SCREEN_WIDTH = width;
@@ -26,7 +36,6 @@ const POSITION_OPTS = {
   timeout: 20000,
   maximumAge: 1000
 }
-
 
 class Map extends Component {
   static navigationOptions = {
@@ -49,12 +58,56 @@ class Map extends Component {
       startStop: false,
       startStopButtonStyle: {width: SCREEN_WIDTH, bottom: 0, top: SCREEN_HEIGHT-170, backgroundColor: 'green', alignItems: "center", justifyContent: 'center'},
       startStopButtonText: 'Start',
-      linePositions: [],
-      // linePositions: [ { latitude: 51, longitude: 0.12 }, { latitude: 60, longitude: 5} ],
+      territoriesArray: [],
+      linePositions: []
     };
+
+    this.dbRef = this.getRef().child('territories');
   }
+
+  getRef() {
+    return firebaseApp.database().ref();
+  }
+
+  updateColorData(territoryId, color) {
+    // this updates the database and reloads all the data
+    firebaseApp.database().ref('territories/' + territoryId).update({
+      color: color
+    });
+    this.getData(this.dbRef);
+  }
+
+  getData(dbRef){
+    var self = this;
+    dbRef.on ('value', (snap) => {
+      let territories = []
+      snap.forEach( (child) => {
+        var color = child.val().color;
+        var coordinates = child.val().coordinates;
+        territories.push(  <MapView.Polygon coordinates={coordinates} fillColor={color}/> );
+      });
+      self.setState({
+        territoriesArray: territories
+      });
+    });
+  }
+
+  addRoute(dbRef){
+    dbRef.push(this.linePositions);
+    var position = [{"latitude": this.state.currentPosition.latitude, "longitude": this.state.currentPosition.longitude}];
+    this.setState({
+      linePositions: position
+    });
+  };
+
+  componentWillMount(){
+    // this.getData(this.routesRef);
+  }
+
   watchID: ?number = null
+
   componentDidMount() {
+    this.getData(this.dbRef);
     var self = this;
 
     function error(err) {
@@ -113,10 +166,12 @@ class Map extends Component {
     if (this.state.startStop === true) {
       this.setStartStopButtonToStart();
       this.setState({ startStop: false });
+      //this.addRoute(this.routesRef);
     }
     else {
       this.setState({ startStop: true });
       this.setStartStopButtonToStop();
+      this.updateColorData("1", "red");
     }
   }
 
@@ -149,6 +204,7 @@ class Map extends Component {
 
           <Grid/>
           <JourneyLine linePositions={this.state.linePositions}/>
+          { this.state.territoriesArray }
 
         </MapView>
 

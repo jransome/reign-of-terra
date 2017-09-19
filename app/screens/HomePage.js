@@ -1,14 +1,7 @@
 import React, { Component } from 'react';
-import {
-  AppRegistry,
-  StyleSheet,
-  Text,
-  View,
-  Button,
-  Image
-} from 'react-native';
+import { AppRegistry, StyleSheet, Text, View, Button, Image } from 'react-native';
 
-class Login extends Component {
+class HomePage extends Component {
   static navigationOptions = {
     header: null
   };
@@ -29,8 +22,8 @@ class Login extends Component {
         <View style={styles.submitButtons}>
           <View style={styles.button}>
             <Button
-            onPress={() => navigate('Map')}
-            title="LOAD MAP"
+            onPress={() => navigate('User')}
+            title="Go to User Page"
             />
           </View>
         </View>
@@ -75,4 +68,4 @@ const styles = StyleSheet.create({
 
   },
 });
-export default Login;
+export default HomePage;
