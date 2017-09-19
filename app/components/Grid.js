@@ -14,7 +14,9 @@ import {
   TouchableOpacity
 } from 'react-native';
 
-const SQUARE_HEIGHT_WIDTH = 0.1;
+const SQUARE_HEIGHT_WIDTH = 0.003;
+const GRID_HEIGHT = 40;
+const GRID_WIDTH = 40;
 
 const BOUNDARIES = {
   topLatitude: 51.580456223295826,
@@ -80,15 +82,14 @@ export default class Grid extends Component {
       };
     };
 
-    // Start at bottom left origin and draw right-left, bottom to top
-    for (var i = 0; i < 6; i++) {
-      for (var j = 0; j < 6; j++) {
+    // Start at bottom left origin and draw left-right, bottom to top
+    for (var i = 0; i < GRID_HEIGHT; i++) {
+      for (var j = 0; j < GRID_WIDTH; j++) {
         var origin = { latitude: BOUNDARIES.bottomLatitude + i * SQUARE_HEIGHT_WIDTH, longitude: BOUNDARIES.leftLongitude + j * SQUARE_HEIGHT_WIDTH }
         var newSquare = generateSquareCoordsFromOrigin(origin)
         this.state.grid.push(newSquare);
       }
     }
-
 
     function generateGridJsx(grid){
       var jsxArray = []
@@ -109,7 +110,7 @@ export default class Grid extends Component {
   }
 
   render() {
-    console.log(this.state.gridJsx);
+    console.log(this.state.gridJsx)
     return <View>{this.state.gridJsx}</View>
   }
 }

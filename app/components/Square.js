@@ -10,7 +10,8 @@ export default class Square extends Component {
     this.state = {
       owner: null,
       color: 'rgba(120,50,200,0.3)',
-      strokeColor: 'rgba(20,20,20,0.2)',
+      strokeColor: 'rgba(20,20,20,0.1)',
+      strokeWidth: 0.2,
       namedCoords: props.coordinates,
       arrayCoords: [],
     };
@@ -37,7 +38,7 @@ export default class Square extends Component {
 
   render() {
     return (
-      <MapView.Polygon coordinates={this.state.arrayCoords} fillColor={this.state.color} strokeColor={this.state.strokeColor}/>
+      <MapView.Polygon coordinates={this.state.arrayCoords} fillColor={this.state.color} strokeColor={this.state.strokeColor} strokeWidth={this.state.strokeWidth}/>
     )
   }
 }
