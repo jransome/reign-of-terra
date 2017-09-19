@@ -57,11 +57,11 @@ class Map extends Component {
       startStop: false,
       startStopButtonStyle: {width: SCREEN_WIDTH, bottom: 0, top: SCREEN_HEIGHT-170, backgroundColor: 'green', alignItems: "center", justifyContent: 'center'},
       startStopButtonText: 'Start',
-      polylineArray: [],
+      territoriesArray: [],
       linePositions: []
     };
 
-    this.routesRef = this.getRef().child('routes');
+    this.routesRef = this.getRef().child('territories');
   }
 
   getRef() {
@@ -71,12 +71,14 @@ class Map extends Component {
   getRoutes(routesRef){
     var self = this;
     routesRef.on ('value', (snap) => {
-      let polylinesToRender = []
+      let territories = []
       snap.forEach( (child) => {
-        polylinesToRender.push( <JourneyLine linePositions={child.val()} /> );
+        var color = "rgba(255,255,255,0.5)"//child.val().color;
+        var coordinates = child.val().coordinates;
+        territories.push(  <MapView.Polygon coordinates={coordinates} fillColor={color}/> );
       });
       self.setState({
-        polylineArray: polylinesToRender
+        territoriesArray: territories
       });
     });
   }
@@ -190,7 +192,7 @@ class Map extends Component {
             </View>
           </MapView.Marker>
           <JourneyLine linePositions={this.state.linePositions} />
-          { this.state.polylineArray }
+          { this.state.territoriesArray }
         </MapView>
 
         <View style={this.state.startStopButtonStyle}>
