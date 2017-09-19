@@ -14,51 +14,7 @@ import {
   TouchableOpacity
 } from 'react-native';
 
-const SQUARE_HEIGHT_WIDTH = 0.003;
-const GRID_HEIGHT = 40;
-const GRID_WIDTH = 40;
-
-const BOUNDARIES = {
-  topLatitude: 51.580456223295826,
-  bottomLatitude: 51.4445655655249,
-  leftLongitude: -0.33370971429690144,
-  rightLongitude: 0.18402099859372356,
-};
-
-let fakeCoordA = {
-  latitude: 52,
-  longitude: 0,
-};
-
-let fakeCoordB = {
-  latitude: 51,
-  longitude: 0,
-};
-
-let fakeCoordC = {
-  latitude: 51,
-  longitude: 1,
-};
-
-let fakeCoordD = {
-  latitude: 52,
-  longitude: 1,
-};
-
-let fakeSquare1 = [fakeCoordA, fakeCoordB, fakeCoordC, fakeCoordD];
-
-let fakeCoordE = {
-  latitude: 52,
-  longitude: 2,
-};
-
-let fakeCoordF = {
-  latitude: 51,
-  longitude: 2,
-};
-
-let fakeSquare2 = [fakeCoordC, fakeCoordD, fakeCoordE, fakeCoordF];
-let squareAry = [fakeSquare1, fakeSquare2]
+import * as constants from '../Constants'
 
 export default class Grid extends Component {
   constructor(props) {
@@ -76,16 +32,16 @@ export default class Grid extends Component {
     function generateSquareCoordsFromOrigin(origin){
       return newSquare = {
         bottomLeft: origin,
-        topLeft: { latitude: origin.latitude + SQUARE_HEIGHT_WIDTH, longitude: origin.longitude },
-        topRight: { latitude: origin.latitude + SQUARE_HEIGHT_WIDTH, longitude: origin.longitude + SQUARE_HEIGHT_WIDTH },
-        bottomRight: { latitude: origin.latitude, longitude: origin.longitude + SQUARE_HEIGHT_WIDTH },
+        topLeft: { latitude: origin.latitude + constants.SQUARE_HEIGHT_WIDTH, longitude: origin.longitude },
+        topRight: { latitude: origin.latitude + constants.SQUARE_HEIGHT_WIDTH, longitude: origin.longitude + constants.SQUARE_HEIGHT_WIDTH },
+        bottomRight: { latitude: origin.latitude, longitude: origin.longitude + constants.SQUARE_HEIGHT_WIDTH },
       };
     };
 
     // Start at bottom left origin and draw left-right, bottom to top
-    for (var i = 0; i < GRID_HEIGHT; i++) {
-      for (var j = 0; j < GRID_WIDTH; j++) {
-        var origin = { latitude: BOUNDARIES.bottomLatitude + i * SQUARE_HEIGHT_WIDTH, longitude: BOUNDARIES.leftLongitude + j * SQUARE_HEIGHT_WIDTH }
+    for (var i = 0; i < constants.GRID_HEIGHT; i++) {
+      for (var j = 0; j < constants.GRID_WIDTH; j++) {
+        var origin = { latitude: constants.MAP_ORIGIN.bottomLatitude + i * constants.SQUARE_HEIGHT_WIDTH, longitude: constants.MAP_ORIGIN.leftLongitude + j * constants.SQUARE_HEIGHT_WIDTH }
         var newSquare = generateSquareCoordsFromOrigin(origin)
         this.state.grid.push(newSquare);
       }
