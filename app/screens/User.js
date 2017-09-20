@@ -101,10 +101,6 @@ export default class User extends Component {
           onPress={ this.signin }
           title="Sign In"
           />
-          <Button
-          onPress={() => navigate('Map')}
-          title="LOAD MAP"
-          />
         </View>
       </View>
     );

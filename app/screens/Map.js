@@ -53,7 +53,7 @@ class Map extends Component {
       territoriesArray: [],
       linePositions: [],
       userColor: "white",
-      userEmail: "loading..."
+      userEmail: "loading...",
       allJournies: []
     };
     this.dbJourneyRef = constants.firebaseApp.database().ref().child('journies');
@@ -85,6 +85,7 @@ class Map extends Component {
         }
       });
     });
+  }
 
   saveJourneyLine(dbRef){
     if (this.state.linePositions.length > 0) {
