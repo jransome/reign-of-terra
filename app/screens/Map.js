@@ -94,7 +94,7 @@ class Map extends Component {
     var refreshJournies = function(data) {
       var val = data.val();
       console.log(val);
-      self.state.allJournies.push( <JourneyLine linePositions={val.coordinates}/>);
+      self.state.allJournies.push( <JourneyLine linePositions={val.coordinates} lineColour={val.colour}/>);
     };
     this.dbJourneyRef.on('child_added', refreshJournies);
   }
