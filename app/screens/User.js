@@ -4,8 +4,6 @@ import { AppRegistry, Text, View, StyleSheet, Button, TextInput} from 'react-nat
 import { StackNavigator } from 'react-navigation'
 import ColorPicker from '../components/ColorPicker.js'
 
-
-
 export default class User extends Component {
   static navigationOptions = {
     title: 'User',
@@ -13,46 +11,36 @@ export default class User extends Component {
 
   constructor(props) {
     super(props);
-
     this.state = {
-      loaded: false,
-      email: 'default',
+      email: 'default@gmail.com',
       password: 'default',
+      navigation: this.props.navigation
     }
-
   }
 
   signup(){
-    alert("signup")
-    constants.firebaseApp.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).catch(function(error) {
+    var self = this;
+    constants.firebaseApp.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
+    .then(function(user) {
+      alert("Signed up successfully. Click on Go to Map.")
+    })
+    .catch(function(error) {
       // Handle Errors here.
       var errorCode = error.code;
       var errorMessage = error.message;
       alert(errorCode + errorMessage)
     });
-
-
-    this.setState({
-      email: '',
-      password: '',
-      loaded: true
-    });
   }
 
   signin(){
-    alert("sign in")
-    constants.firebaseApp.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then(function(user) {
-      var user = constants.firebaseApp.auth().currentUser;
-    }, function(error) {
+    var self = this;
+    constants.firebaseApp.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
+    .then(function(user) {
+      alert("Signed in successfully. Click on Go to Map.")
+    }).catch(function(error) {
       var errorCode = error.code;
       var errorMessage = error.message;
       alert(errorCode + errorMessage);
-    });
-
-    this.setState({
-      email: '',
-      password: '',
-      loaded: true
     });
   }
 
@@ -115,6 +103,6 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor:'#a1b1cc',
     minHeight: 40,
-    top: 150,
+    top: 0,
   },
 });
