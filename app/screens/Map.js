@@ -72,7 +72,7 @@ class Map extends Component {
   }
 
   saveJourneyLine(dbRef){
-    if (!this.state.linePositions === []) {
+    if (this.state.linePositions.length > 0) {
       var newJourney = {
         coordinates: this.state.linePositions,
         ownerID: 0,
@@ -80,8 +80,9 @@ class Map extends Component {
       }
       dbRef.push(newJourney);
       this.resetJourney()
+    } else {
+      alert("No journey was saved!")
     }
-    alert("No journey to save!")
   };
 
   resetJourney(){
