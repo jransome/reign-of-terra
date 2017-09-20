@@ -176,6 +176,7 @@ class Map extends Component {
       mapOptions.scrollEnabled = false;
       mapOptions.onPanDrag = e => this.onPress(e);
     }
+    console.log(this.state.user)
     return (
       <View style={styles.container}>
         <MapView
