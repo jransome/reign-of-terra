@@ -51,9 +51,11 @@ class Map extends Component {
       startStopButtonStyle: {width: SCREEN_WIDTH, bottom: 0, top: SCREEN_HEIGHT-170, backgroundColor: 'green', alignItems: "center", justifyContent: 'center'},
       startStopButtonText: 'Start',
       territoriesArray: [],
-      linePositions: []
+      linePositions: [],
+      allJournies: []
     };
-
+    this.dbJourneyRef = constants.firebaseApp.database().ref().child('journies');
+    this.setupDatabaseJourniesListener();
     this.dbRef = this.getRef().child('territories');
   }
 
@@ -67,6 +69,34 @@ class Map extends Component {
       color: color
     });
     this.getData(this.dbRef);
+  }
+
+  saveJourneyLine(dbRef){
+    if (this.state.linePositions.length > 0) {
+      var newJourney = {
+        coordinates: this.state.linePositions,
+        ownerID: 0,
+        colour: 'blue',
+      }
+      dbRef.push(newJourney);
+      this.resetJourney()
+    } else {
+      alert("No journey was saved!")
+    }
+  };
+
+  resetJourney(){
+    this.state.linePositions = [];
+  }
+
+  setupDatabaseJourniesListener(){
+    var self = this;
+    var refreshJournies = function(data) {
+      var val = data.val();
+      console.log(val);
+      self.state.allJournies.push( <JourneyLine linePositions={val.coordinates} lineColour={val.colour}/>);
+    };
+    this.dbJourneyRef.on('child_added', refreshJournies);
   }
 
   getData(dbRef){
@@ -83,14 +113,6 @@ class Map extends Component {
       });
     });
   }
-
-  addRoute(dbRef){
-    dbRef.push(this.linePositions);
-    var position = [{"latitude": this.state.currentPosition.latitude, "longitude": this.state.currentPosition.longitude}];
-    this.setState({
-      linePositions: position
-    });
-  };
 
   componentWillMount(){
     // this.getData(this.routesRef);
@@ -158,7 +180,7 @@ class Map extends Component {
     if (this.state.startStop === true) {
       this.setStartStopButtonToStart();
       this.setState({ startStop: false });
-      //this.addRoute(this.routesRef);
+      this.saveJourneyLine(this.dbJourneyRef);
     }
     else {
       this.setState({ startStop: true });
@@ -166,6 +188,9 @@ class Map extends Component {
       this.updateColorData("1", "red");
     }
   }
+
+
+
 
   render() {
     const mapOptions = {
@@ -197,6 +222,7 @@ class Map extends Component {
           <Grid/>
           <JourneyLine linePositions={this.state.linePositions}/>
           { this.state.territoriesArray }
+          { this.state.allJournies }
 
         </MapView>
 
