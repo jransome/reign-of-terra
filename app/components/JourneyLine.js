@@ -7,7 +7,8 @@ export default class JourneyLine extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      linePositions: props.linePositions
+      linePositions: props.linePositions,
+      lineColour: props.lineColour
     };
   }
 
@@ -19,8 +20,8 @@ export default class JourneyLine extends Component {
     return(
       <MapView.Polyline
       coordinates={this.state.linePositions}
-      strokeColor="pink"
-      strokeWidth={3}
+      strokeColor={this.state.lineColour}
+      strokeWidth={5}
       geodesic={true}
       lineCap="round"
       />
