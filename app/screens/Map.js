@@ -52,9 +52,10 @@ class Map extends Component {
       startStopButtonText: 'Start',
       territoriesArray: [],
       linePositions: [],
-
+      allJournies: []
     };
     this.dbJourneyRef = constants.firebaseApp.database().ref().child('journies');
+    this.setupDatabaseJourniesListener();
     this.dbRef = this.getRef().child('territories');
   }
 
@@ -87,6 +88,15 @@ class Map extends Component {
     this.state.linePositions = [];
   }
 
+  setupDatabaseJourniesListener(){
+    var self = this;
+    var refreshJournies = function(data) {
+      var val = data.val();
+      console.log(val);
+      self.state.allJournies.push( <JourneyLine linePositions={val.coordinates}/>);
+    };
+    this.dbJourneyRef.on('child_added', refreshJournies);
+  }
 
   getData(dbRef){
     var self = this;
@@ -211,6 +221,7 @@ class Map extends Component {
           <Grid/>
           <JourneyLine linePositions={this.state.linePositions}/>
           { this.state.territoriesArray }
+          { this.state.allJournies }
 
         </MapView>
 
