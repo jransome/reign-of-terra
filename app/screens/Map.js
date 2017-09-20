@@ -1,6 +1,6 @@
 'use strict'
+import * as constants from '../Constants'
 import React, { Component } from 'react';
-import * as firebase from 'firebase';
 import {
   AppRegistry,
   StyleSheet,
@@ -15,14 +15,6 @@ import {
 import MapView from 'react-native-maps'
 import JourneyLine from '../components/JourneyLine'
 import Grid from '../components/Grid'
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCO9wrOCauga078hzCPf29q5a_hq1HPvVE",
-  authDomain: "reign-of-terra-71a8a.firebaseapp.com",
-  databaseURL: "https://reign-of-terra-71a8a.firebaseio.com",
-  storageBucket: "reign-of-terra-71a8a.appspot.com"
-};
-const firebaseApp = firebase.initializeApp(firebaseConfig);
 
 const {width, height} = Dimensions.get('window');
 const SCREEN_HEIGHT = height;
@@ -66,12 +58,12 @@ class Map extends Component {
   }
 
   getRef() {
-    return firebaseApp.database().ref();
+    return constants.firebaseApp.database().ref();
   }
 
   updateColorData(territoryId, color) {
     // this updates the database and reloads all the data
-    firebaseApp.database().ref('territories/' + territoryId).update({
+    constants.firebaseApp.database().ref('territories/' + territoryId).update({
       color: color
     });
     this.getData(this.dbRef);
@@ -191,7 +183,7 @@ class Map extends Component {
           initialRegion={this.state.currentPosition}
           zoomEnabled={true}
           maxZoomLevel={20}
-          minZoomLevel={1}
+          minZoomLevel={8}
           showsMyLocationButton={true}
           showsUserLocation={true}>
           <MapView.Marker

@@ -8,7 +8,7 @@ export default class Square extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      owner: null,
+      ownerID: null,
       color: 'rgba(120,50,200,0.3)',
       strokeColor: 'rgba(20,20,20,0.1)',
       strokeWidth: 0.2,
