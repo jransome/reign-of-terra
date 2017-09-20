@@ -7,7 +7,7 @@ class ColorPicker extends Component {
      style: {
         fontSize: 50,
         alignSelf: 'center',
-        color: "Red"
+        color: "red"
      }
    }
    updateColor = (color) => {

@@ -51,9 +51,10 @@ class Map extends Component {
       startStopButtonStyle: {width: SCREEN_WIDTH, bottom: 0, top: SCREEN_HEIGHT-170, backgroundColor: 'green', alignItems: "center", justifyContent: 'center'},
       startStopButtonText: 'Start',
       territoriesArray: [],
-      linePositions: []
-    };
+      linePositions: [],
 
+    };
+    this.dbJourneyRef = constants.firebaseApp.database().ref().child('journies');
     this.dbRef = this.getRef().child('territories');
   }
 
@@ -69,6 +70,24 @@ class Map extends Component {
     this.getData(this.dbRef);
   }
 
+  saveJourneyLine(dbRef){
+    if (!this.state.linePositions === []) {
+      var newJourney = {
+        coordinates: this.state.linePositions,
+        ownerID: 0,
+        colour: 'blue',
+      }
+      dbRef.push(newJourney);
+      this.resetJourney()
+    }
+    alert("No journey to save!")
+  };
+
+  resetJourney(){
+    this.state.linePositions = [];
+  }
+
+
   getData(dbRef){
     var self = this;
     dbRef.on ('value', (snap) => {
@@ -83,14 +102,6 @@ class Map extends Component {
       });
     });
   }
-
-  addRoute(dbRef){
-    dbRef.push(this.linePositions);
-    var position = [{"latitude": this.state.currentPosition.latitude, "longitude": this.state.currentPosition.longitude}];
-    this.setState({
-      linePositions: position
-    });
-  };
 
   componentWillMount(){
     // this.getData(this.routesRef);
@@ -158,7 +169,7 @@ class Map extends Component {
     if (this.state.startStop === true) {
       this.setStartStopButtonToStart();
       this.setState({ startStop: false });
-      //this.addRoute(this.routesRef);
+      this.saveJourneyLine(this.dbJourneyRef);
     }
     else {
       this.setState({ startStop: true });
@@ -166,6 +177,9 @@ class Map extends Component {
       this.updateColorData("1", "red");
     }
   }
+
+
+
 
   render() {
     const mapOptions = {
