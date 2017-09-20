@@ -168,6 +168,7 @@ class Map extends Component {
   }
 
   render() {
+    alert("Playing as " + constants.firebaseApp.auth().currentUser.email)
     const mapOptions = {
       scrollEnabled: true,
     };

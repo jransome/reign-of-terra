@@ -14,7 +14,7 @@ export default class User extends Component {
     this.state = {
       email: 'default@gmail.com',
       password: 'default',
-      navigation: this.props.navigation
+      color: "white"
     }
   }
 
@@ -51,10 +51,10 @@ export default class User extends Component {
     return (
       <View>
       <TextInput
-          style={styles.textinput}
-          onChangeText={(text) => this.setState({email: text})}
-          value={this.state.email}
-      placeholder={"Email Address"}
+        style={styles.textinput}
+        onChangeText={(text) => this.setState({email: text})}
+        value={this.state.email}
+        placeholder={"Email Address"}
       />
       <TextInput
         style={styles.textinput}
@@ -64,7 +64,7 @@ export default class User extends Component {
         placeholder={"Password"}
       />
       <Text style={styles.heading}>PICK POLYGON COLOR</Text>
-        <ColorPicker />
+        <ColorPicker color={"white"}/>
         <View style={styles.button}>
           <Button
           onPress={this.signup.bind(this)}
