@@ -73,12 +73,11 @@ class Map extends Component {
   getUserColor(){
     var self = this;
     var email = constants.firebaseApp.auth().currentUser.email;
-    alert("get user color for " + email)
     constants.firebaseApp.database().ref().child("users").on('value', (snap) => {
       snap.forEach( (child) => {
         if (child.val().email === email) {
           self.setState({ userColor: child.val().color });
-          alert("Current player color " + self.state.userColor)
+          alert("Current player: " + email + " Color " + self.state.userColor)
           return;
         }
       });

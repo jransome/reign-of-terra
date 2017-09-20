@@ -21,6 +21,8 @@ export default class User extends Component {
          color: "red"
       }
     }
+    this.signup = this.signup.bind(this);
+    this.signin = this.signin.bind(this);
   }
 
   signup(){
@@ -28,31 +30,22 @@ export default class User extends Component {
     var dbRef = constants.firebaseApp.auth()
     dbRef.createUserWithEmailAndPassword(this.state.email, this.state.password)
     .then(function(user) {
-      alert("Signed up successfully. Click on Go to Map." + self.state.color)
-      var email = user.email;
-      var color = self.state.color;
       constants.firebaseApp.database().ref('users').push({
-        email: email,
-        color: color
+        email: user.email, color: self.state.color
       });
+      return true;
     })
     .catch(function(error) {
-      // Handle Errors here.
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      alert(errorCode + errorMessage)
+      alert(error.code + error.message)
     });
   }
 
   signin(){
-    var self = this;
     constants.firebaseApp.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
     .then(function(user) {
-      alert("Signed in successfully. Click on Go to Map.")
+      return true;
     }).catch(function(error) {
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      alert(errorCode + errorMessage);
+      alert(error.code + error.message)
     });
   }
 
@@ -63,7 +56,7 @@ export default class User extends Component {
         alignSelf: 'center',
         color: color
      }
-     this.setState({pickerStyle: newStyle })
+     this.setState({ pickerStyle: newStyle })
   }
 
   render() {
@@ -97,11 +90,11 @@ export default class User extends Component {
       <Text style = {this.state.pickerStyle}>{this.state.color}</Text>
         <View style={styles.button}>
           <Button
-          onPress={this.signup.bind(this)}
+          onPress={ () => { if (this.signup) navigate("Map")} }
           title="Sign Up"
           />
           <Button
-          onPress={this.signin.bind(this)}
+          onPress={ () => { if (this.signin) navigate("Map") } }
           title="Sign In"
           />
           <Button
