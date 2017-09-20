@@ -48,10 +48,12 @@ class Map extends Component {
         longitude: 0
       },
       startStop: false,
-      startStopButtonStyle: {width: SCREEN_WIDTH, bottom: 0, top: SCREEN_HEIGHT-170, backgroundColor: 'green', alignItems: "center", justifyContent: 'center'},
+      startStopButtonStyle: {width: SCREEN_WIDTH, flex:0.1, backgroundColor: 'green', alignItems: "center", justifyContent: 'center'},
       startStopButtonText: 'Start',
       territoriesArray: [],
       linePositions: [],
+      userColor: "white",
+      userEmail: "loading...",
       allJournies: []
     };
     this.dbJourneyRef = constants.firebaseApp.database().ref().child('journies');
@@ -69,6 +71,20 @@ class Map extends Component {
       color: color
     });
     this.getData(this.dbRef);
+  }
+
+  getUserData(){
+    var self = this;
+    var email = constants.firebaseApp.auth().currentUser.email;
+    this.setState({ userEmail: email });
+    constants.firebaseApp.database().ref().child("users").on('value', (snap) => {
+      snap.forEach( (child) => {
+        if (child.val().email === email) {
+          self.setState({ userColor: child.val().color });
+          return;
+        }
+      });
+    });
   }
 
   saveJourneyLine(dbRef){
@@ -114,13 +130,23 @@ class Map extends Component {
     });
   }
 
-  componentWillMount(){
-    // this.getData(this.routesRef);
-  }
+  addRoute(dbRef){
+    dbRef.push(this.linePositions);
+    var position = [{"latitude": this.state.currentPosition.latitude, "longitude": this.state.currentPosition.longitude}];
+    this.setState({
+      linePositions: position
+    });
+  };
 
   watchID: ?number = null
 
+  userEmail() {
+    return constants.firebaseApp.auth().currentUser.email
+  }
+
   componentDidMount() {
+    this.getUserData()
+
     this.getData(this.dbRef);
     var self = this;
 
@@ -161,17 +187,13 @@ class Map extends Component {
     navigator.geolocation.clearWatch(this.watchID);
   }
 
-  stopTracking() {
-    // this.setState({ linePositions: [] });
-  }
-
   setStartStopButtonToStop() {
-    this.setState({ startStopButtonStyle: {width: SCREEN_WIDTH, bottom: 0, top: SCREEN_HEIGHT-170, height: 100, backgroundColor: 'red', alignItems: "center", justifyContent: 'center'} });
+    this.setState({ startStopButtonStyle: {width: SCREEN_WIDTH, flex: 0.1, backgroundColor: 'red', alignItems: "center", justifyContent: 'center'} });
     this.setState({ startStopButtonText: 'Stop' });
   }
 
   setStartStopButtonToStart() {
-    this.setState({ startStopButtonStyle: {width: SCREEN_WIDTH, bottom: 0, top: SCREEN_HEIGHT-170, height: 100, backgroundColor: 'green', alignItems: "center", justifyContent: 'center'} });
+    this.setState({ startStopButtonStyle: {width: SCREEN_WIDTH, flex: 0.1, backgroundColor: 'green', alignItems: "center", justifyContent: 'center'} });
     this.setState({ startStopButtonText: 'Start' });
   }
 
@@ -193,6 +215,7 @@ class Map extends Component {
 
 
   render() {
+
     const mapOptions = {
       scrollEnabled: true,
     };
@@ -203,6 +226,16 @@ class Map extends Component {
     }
     return (
       <View style={styles.container}>
+        <View style={{
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: this.state.userColor,
+          width: SCREEN_WIDTH,
+          flex: 0.1
+        }}>
+        <Text style={{ fontSize: 30, textAlign: "center" }}> {this.state.userEmail} </Text>
+        </View>
+
         <MapView
           style={styles.map}
           initialRegion={this.state.currentPosition}
@@ -228,7 +261,7 @@ class Map extends Component {
 
         <View style={this.state.startStopButtonStyle}>
           <TouchableOpacity onPress={this.onStartStopButtonPress}>
-            <Text style={{fontSize: 85, color: "white"}}> {this.state.startStopButtonText} </Text>
+            <Text style={{fontSize: 30, color: "white"}}> {this.state.startStopButtonText} </Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -237,14 +270,6 @@ class Map extends Component {
 
 }
 const styles = StyleSheet.create({
-  startStopButton: {
-    height: 215,
-    width: SCREEN_WIDTH,
-    borderWidth: 1,
-    borderColor: 'rgba(0,112,255,0.3)',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
   radius: {
     height: 50,
     width: 50,
@@ -277,11 +302,8 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   map: {
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 100,
-    position: 'absolute',
+    width: SCREEN_WIDTH,
+    flex: 0.8
   },
   instructions: {
     textAlign: 'center',
