@@ -52,7 +52,8 @@ class Map extends Component {
       startStopButtonText: 'Start',
       territoriesArray: [],
       linePositions: [],
-      userColor: ""
+      userColor: "",
+      userEmail: ""
     };
 
     this.dbRef = this.getRef().child('territories');
@@ -70,9 +71,10 @@ class Map extends Component {
     this.getData(this.dbRef);
   }
 
-  getUserColor(){
+  getUserData(){
     var self = this;
     var email = constants.firebaseApp.auth().currentUser.email;
+    this.setState({ userEmail: email });
     constants.firebaseApp.database().ref().child("users").on('value', (snap) => {
       snap.forEach( (child) => {
         if (child.val().email === email) {
@@ -115,7 +117,7 @@ class Map extends Component {
   }
 
   componentDidMount() {
-    this.getUserColor()
+    this.getUserData()
 
     this.getData(this.dbRef);
     var self = this;
@@ -193,6 +195,16 @@ class Map extends Component {
     }
     return (
       <View style={styles.container}>
+        <View style={{
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: this.state.userColor,
+          height: 50,
+          width: SCREEN_WIDTH
+        }}>
+        <Text style={{ fontSize: 30, textAlign: "center" }}> {this.state.userEmail} </Text>
+        </View>
+
         <MapView
           style={styles.map}
           initialRegion={this.state.currentPosition}
@@ -268,7 +280,7 @@ const styles = StyleSheet.create({
   map: {
     left: 0,
     right: 0,
-    top: 0,
+    top: 50,
     bottom: 100,
     position: 'absolute',
   },
