@@ -5,6 +5,7 @@ import { StackNavigator } from 'react-navigation'
 import ColorPicker from '../components/ColorPicker.js'
 
 
+
 export default class User extends Component {
   static navigationOptions = {
     title: 'User',
@@ -16,7 +17,7 @@ export default class User extends Component {
     this.state = {
       loaded: false,
       email: 'default',
-      password: 'default'
+      password: 'default',
     }
 
   }
@@ -30,14 +31,6 @@ export default class User extends Component {
       alert(errorCode + errorMessage)
     });
 
-    constants.firebaseApp.auth().onAuthStateChanged(function(user) {
-     if (user) {
-       // User is signed in.
-       alert(user.email+ "Signed in")
-     } else {
-       alert("Signed out")
-     }
-   });
 
     this.setState({
       email: '',
@@ -48,11 +41,12 @@ export default class User extends Component {
 
   signin(){
     alert("sign in")
-    constants.firebaseApp.auth().signInWithEmailAndPassword(this.state.email, this.state.password).catch(function(error) {
-      // Handle Errors here.
+    constants.firebaseApp.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then(function(user) {
+      var user = constants.firebaseApp.auth().currentUser;
+    }, function(error) {
       var errorCode = error.code;
       var errorMessage = error.message;
-      alert(errorCode + errorMessage)
+      alert(errorCode + errorMessage);
     });
 
     this.setState({
@@ -63,7 +57,9 @@ export default class User extends Component {
   }
 
   render() {
-      const { navigate } = this.props.navigation;
+
+    const { navigate } = this.props.navigation;
+
     return (
       <View>
       <TextInput
