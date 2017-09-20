@@ -77,7 +77,7 @@ class Map extends Component {
       snap.forEach( (child) => {
         if (child.val().email === email) {
           self.setState({ userColor: child.val().color });
-          alert("Current player: " + email + " Color " + self.state.userColor)
+          alert("Current player: " + email + " Color " + child.val().color)
           return;
         }
       });
