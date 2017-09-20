@@ -33,7 +33,7 @@ export default class User extends Component {
       constants.firebaseApp.database().ref('users').push({
         email: user.email, color: self.state.color
       });
-      alert("Signed up as: " + user.email + " Color: " + self.state.color)
+      // alert("Signed up as: " + user.email + " Color: " + self.state.color)
       return true;
     })
     .catch(function(error) {
@@ -45,7 +45,7 @@ export default class User extends Component {
   signin(){
     constants.firebaseApp.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
     .then(function(user) {
-      alert("Signed in as: " + user.email)
+      // alert("Signed in as: " + user.email)
       return true;
     }).catch(function(error) {
       alert(error.code + error.message)

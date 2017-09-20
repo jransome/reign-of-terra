@@ -48,12 +48,12 @@ class Map extends Component {
         longitude: 0
       },
       startStop: false,
-      startStopButtonStyle: {width: SCREEN_WIDTH, bottom: 0, top: SCREEN_HEIGHT-170, backgroundColor: 'green', alignItems: "center", justifyContent: 'center'},
+      startStopButtonStyle: {width: SCREEN_WIDTH, flex:0.1, backgroundColor: 'green', alignItems: "center", justifyContent: 'center'},
       startStopButtonText: 'Start',
       territoriesArray: [],
       linePositions: [],
-      userColor: "",
-      userEmail: ""
+      userColor: "white",
+      userEmail: "loading..."
     };
 
     this.dbRef = this.getRef().child('territories');
@@ -79,11 +79,9 @@ class Map extends Component {
       snap.forEach( (child) => {
         if (child.val().email === email) {
           self.setState({ userColor: child.val().color });
-          alert("Current player: " + email + " Color " + child.val().color)
           return;
         }
       });
-      alert("Current user color not found")
     });
   }
 
@@ -160,12 +158,12 @@ class Map extends Component {
   }
 
   setStartStopButtonToStop() {
-    this.setState({ startStopButtonStyle: {width: SCREEN_WIDTH, bottom: 0, top: SCREEN_HEIGHT-170, height: 100, backgroundColor: 'red', alignItems: "center", justifyContent: 'center'} });
+    this.setState({ startStopButtonStyle: {width: SCREEN_WIDTH, flex: 0.1, backgroundColor: 'red', alignItems: "center", justifyContent: 'center'} });
     this.setState({ startStopButtonText: 'Stop' });
   }
 
   setStartStopButtonToStart() {
-    this.setState({ startStopButtonStyle: {width: SCREEN_WIDTH, bottom: 0, top: SCREEN_HEIGHT-170, height: 100, backgroundColor: 'green', alignItems: "center", justifyContent: 'center'} });
+    this.setState({ startStopButtonStyle: {width: SCREEN_WIDTH, flex: 0.1, backgroundColor: 'green', alignItems: "center", justifyContent: 'center'} });
     this.setState({ startStopButtonText: 'Start' });
   }
 
@@ -199,8 +197,8 @@ class Map extends Component {
           alignItems: 'center',
           justifyContent: 'center',
           backgroundColor: this.state.userColor,
-          height: 50,
-          width: SCREEN_WIDTH
+          width: SCREEN_WIDTH,
+          flex: 0.1
         }}>
         <Text style={{ fontSize: 30, textAlign: "center" }}> {this.state.userEmail} </Text>
         </View>
@@ -229,7 +227,7 @@ class Map extends Component {
 
         <View style={this.state.startStopButtonStyle}>
           <TouchableOpacity onPress={this.onStartStopButtonPress}>
-            <Text style={{fontSize: 85, color: "white"}}> {this.state.startStopButtonText} </Text>
+            <Text style={{fontSize: 30, color: "white"}}> {this.state.startStopButtonText} </Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -238,14 +236,6 @@ class Map extends Component {
 
 }
 const styles = StyleSheet.create({
-  startStopButton: {
-    height: 215,
-    width: SCREEN_WIDTH,
-    borderWidth: 1,
-    borderColor: 'rgba(0,112,255,0.3)',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
   radius: {
     height: 50,
     width: 50,
@@ -278,11 +268,8 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   map: {
-    left: 0,
-    right: 0,
-    top: 50,
-    bottom: 100,
-    position: 'absolute',
+    width: SCREEN_WIDTH,
+    flex: 0.8
   },
   instructions: {
     textAlign: 'center',
