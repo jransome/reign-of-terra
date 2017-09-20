@@ -1,6 +1,6 @@
 import * as constants from '../Constants'
 import React, { Component } from 'react';
-import { AppRegistry, Text, View, StyleSheet, Button, TextInput} from 'react-native';
+import { AppRegistry, Text, View, StyleSheet, Button, TextInput, Picker} from 'react-native';
 import { StackNavigator } from 'react-navigation'
 import ColorPicker from '../components/ColorPicker.js'
 
@@ -14,15 +14,27 @@ export default class User extends Component {
     this.state = {
       email: 'default@gmail.com',
       password: 'default',
-      color: "white"
+      color: "red",
+      pickerStyle: {
+         fontSize: 30,
+         alignSelf: 'center',
+         color: "red"
+      }
     }
   }
 
   signup(){
     var self = this;
-    constants.firebaseApp.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
+    var dbRef = constants.firebaseApp.auth()
+    dbRef.createUserWithEmailAndPassword(this.state.email, this.state.password)
     .then(function(user) {
-      alert("Signed up successfully. Click on Go to Map.")
+      alert("Signed up successfully. Click on Go to Map." + self.state.color)
+      var email = user.email;
+      var color = self.state.color;
+      constants.firebaseApp.database().ref('users').push({
+        email: email,
+        color: color
+      });
     })
     .catch(function(error) {
       // Handle Errors here.
@@ -42,6 +54,16 @@ export default class User extends Component {
       var errorMessage = error.message;
       alert(errorCode + errorMessage);
     });
+  }
+
+  updateColor = (color) => {
+     this.setState({ color: color })
+     var newStyle = {
+        fontSize: 30,
+        alignSelf: 'center',
+        color: color
+     }
+     this.setState({pickerStyle: newStyle })
   }
 
   render() {
@@ -64,7 +86,15 @@ export default class User extends Component {
         placeholder={"Password"}
       />
       <Text style={styles.heading}>PICK POLYGON COLOR</Text>
-        <ColorPicker color={"white"}/>
+      <Picker selectedValue = {this.state.color} onValueChange = {this.updateColor}>
+        <Picker.Item color="red" label = "Red" value = "red" />
+        <Picker.Item color="blue" label = "Blue" value = "blue" />
+        <Picker.Item color="green" label = "Green" value = "green" />
+        <Picker.Item color="yellow" label = "Yellow" value = "yellow" />
+        <Picker.Item color="pink" label = "Pink" value = "pink" />
+        <Picker.Item color="orange" label = "Orange" value = "orange" />
+      </Picker>
+      <Text style = {this.state.pickerStyle}>{this.state.color}</Text>
         <View style={styles.button}>
           <Button
           onPress={this.signup.bind(this)}

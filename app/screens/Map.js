@@ -51,7 +51,8 @@ class Map extends Component {
       startStopButtonStyle: {width: SCREEN_WIDTH, bottom: 0, top: SCREEN_HEIGHT-170, backgroundColor: 'green', alignItems: "center", justifyContent: 'center'},
       startStopButtonText: 'Start',
       territoriesArray: [],
-      linePositions: []
+      linePositions: [],
+      userColor: ""
     };
 
     this.dbRef = this.getRef().child('territories');
@@ -67,6 +68,22 @@ class Map extends Component {
       color: color
     });
     this.getData(this.dbRef);
+  }
+
+  getUserColor(){
+    var self = this;
+    var email = constants.firebaseApp.auth().currentUser.email;
+    alert("get user color for " + email)
+    constants.firebaseApp.database().ref().child("users").on('value', (snap) => {
+      snap.forEach( (child) => {
+        if (child.val().email === email) {
+          self.setState({ userColor: child.val().color });
+          alert("Current player color " + self.state.userColor)
+          return;
+        }
+      });
+      alert("Current user color not found")
+    });
   }
 
   getData(dbRef){
@@ -92,13 +109,15 @@ class Map extends Component {
     });
   };
 
-  componentWillMount(){
-    // this.getData(this.routesRef);
-  }
-
   watchID: ?number = null
 
+  userEmail() {
+    return constants.firebaseApp.auth().currentUser.email
+  }
+
   componentDidMount() {
+    this.getUserColor()
+
     this.getData(this.dbRef);
     var self = this;
 
@@ -139,10 +158,6 @@ class Map extends Component {
     navigator.geolocation.clearWatch(this.watchID);
   }
 
-  stopTracking() {
-    // this.setState({ linePositions: [] });
-  }
-
   setStartStopButtonToStop() {
     this.setState({ startStopButtonStyle: {width: SCREEN_WIDTH, bottom: 0, top: SCREEN_HEIGHT-170, height: 100, backgroundColor: 'red', alignItems: "center", justifyContent: 'center'} });
     this.setState({ startStopButtonText: 'Stop' });
@@ -168,7 +183,7 @@ class Map extends Component {
   }
 
   render() {
-    alert("Playing as " + constants.firebaseApp.auth().currentUser.email)
+
     const mapOptions = {
       scrollEnabled: true,
     };
