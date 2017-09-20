@@ -14,7 +14,7 @@ export default class User extends Component {
     super(props);
 
     this.state = {
-      loaded: true,
+      loaded: false,
       email: 'default',
       password: 'default'
     }
@@ -22,53 +22,44 @@ export default class User extends Component {
   }
 
   signup(){
-
-    // this.setState({
-    //   loaded: false
-    // });
     alert("signup")
-
     constants.firebaseApp.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).catch(function(error) {
       // Handle Errors here.
       var errorCode = error.code;
       var errorMessage = error.message;
-      alert(errorCode)
-      alert(errorMessage)
-      // ...
+      alert(errorCode + errorMessage)
     });
 
-    // constants.firebaseApp.createUser({
-    //   'email': this.state.email,
-    //   'password': this.state.password
-    // }, (error, userData) => {
-    //
-    //   if(error){
-    //     switch(error.code){
-    //
-    //       case "EMAIL_TAKEN":
-    //         alert("The new user account cannot be created because the email is already in use.");
-    //       break;
-    //
-    //       case "INVALID_EMAIL":
-    //         alert("The specified email is not a valid email.");
-    //       break;
-    //
-    //       default:
-    //         alert("Error creating user:");
-    //     }
-    //
-    //   }else{
-    //     alert('Your account was created!');
-    //   }
-      //
-      // this.setState({
-      //   email: '',
-      //   password: '',
-      //   loaded: true
-      // });
-    //
-    // });
+    constants.firebaseApp.auth().onAuthStateChanged(function(user) {
+     if (user) {
+       // User is signed in.
+       alert(user.email+ "Signed in")
+     } else {
+       alert("Signed out")
+     }
+   });
 
+    this.setState({
+      email: '',
+      password: '',
+      loaded: true
+    });
+  }
+
+  signin(){
+    alert("sign in")
+    constants.firebaseApp.auth().signInWithEmailAndPassword(this.state.email, this.state.password).catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      alert(errorCode + errorMessage)
+    });
+
+    this.setState({
+      email: '',
+      password: '',
+      loaded: true
+    });
   }
 
   render() {
@@ -94,6 +85,10 @@ export default class User extends Component {
           <Button
           onPress={this.signup.bind(this)}
           title="Sign Up"
+          />
+          <Button
+          onPress={this.signin.bind(this)}
+          title="Sign In"
           />
           <Button
           onPress={() => navigate('Map')}

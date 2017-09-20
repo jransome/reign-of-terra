@@ -5,7 +5,7 @@ class ColorPicker extends Component {
    state = {
      color: '',
      style: {
-        fontSize: 50,
+        fontSize: 30,
         alignSelf: 'center',
         color: "Red"
      }
@@ -13,7 +13,7 @@ class ColorPicker extends Component {
    updateColor = (color) => {
       this.setState({ color: color })
       var newStyle = {
-         fontSize: 50,
+         fontSize: 30,
          alignSelf: 'center',
          color: color
       }
