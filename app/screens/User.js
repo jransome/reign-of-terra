@@ -20,6 +20,7 @@ export default class User extends Component {
       password: 'default',
       username: "",
       color: "red",
+      backgroundColor: "white",
       pickerStyle: {
          fontSize: 30,
          alignSelf: 'center',
@@ -59,7 +60,7 @@ export default class User extends Component {
   }
 
   updateColor = (color) => {
-     this.setState({ color: color })
+     this.setState({ backgroundColor: color, color: color })
      var newStyle = {
         fontSize: 30,
         alignSelf: 'center',
@@ -73,7 +74,12 @@ export default class User extends Component {
     const { navigate } = this.props.navigation;
 
     return (
-      <View style={styles.container}>
+      <View style={{
+        flex: 1,
+        backgroundColor:this.state.backgroundColor,
+        flexDirection: 'column',
+        justifyContent: 'center',
+      }}>
       <TextInput
         style={styles.textinput}
         onChangeText={(text) => this.setState({email: text})}
@@ -95,14 +101,13 @@ export default class User extends Component {
       />
       <Text style={styles.heading}>Choose a color for your territory</Text>
       <Picker selectedValue = {this.state.color} onValueChange = {this.updateColor}>
-        <Picker.Item color="red" label = "Red" value = "red" />
-        <Picker.Item color="blue" label = "Blue" value = "blue" />
-        <Picker.Item color="green" label = "Green" value = "green" />
-        <Picker.Item color="yellow" label = "Yellow" value = "yellow" />
-        <Picker.Item color="pink" label = "Pink" value = "pink" />
-        <Picker.Item color="orange" label = "Orange" value = "orange" />
+        <Picker.Item label = "Red" value = "red" />
+        <Picker.Item label = "Blue" value = "blue" />
+        <Picker.Item label = "Green" value = "green" />
+        <Picker.Item label = "Yellow" value = "yellow" />
+        <Picker.Item label = "Pink" value = "pink" />
+        <Picker.Item label = "Orange" value = "orange" />
       </Picker>
-      <Text style = {this.state.pickerStyle}>{this.state.color}</Text>
 
         <View style={styles.signupbutton}>
           <TouchableOpacity onPress={this.signup}>
@@ -122,12 +127,6 @@ export default class User extends Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor:'white',
-    flexDirection: 'column',
-    justifyContent: 'center',
-  },
   signinbutton: {
     flex: 0.2,
     width: SCREEN_WIDTH,
@@ -149,6 +148,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   textinput: {
+   backgroundColor: "white",
    flex: 0.2,
    borderWidth: 1,
  },
