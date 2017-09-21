@@ -39,7 +39,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   buttonView:{
-    flex: 0.1,
+    flex: 0.08,
+    alignItems: "center",
+    justifyContent: 'center',
     backgroundColor:'#a1b1cc',
     minHeight: 40,
   },

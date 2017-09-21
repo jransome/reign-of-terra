@@ -20,7 +20,7 @@ export default class User extends Component {
       password: 'default',
       username: "",
       color: "red",
-      backgroundColor: "white",
+      backgroundColor: "red",
       pickerStyle: {
          fontSize: 30,
          alignSelf: 'center',
