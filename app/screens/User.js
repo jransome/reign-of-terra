@@ -48,11 +48,8 @@ export default class User extends Component {
 
   signin(){
     var self = this;
-    alert("signing in")
-    // this.props.navigation.navigate("Map")
     constants.firebaseApp.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
     .then(function(user) {
-      alert("Signed in as: " + user.email)
       self.props.navigation.navigate("Map")
     }).catch(function(error) {
       alert(error.code + error.message)
@@ -132,14 +129,16 @@ const styles = StyleSheet.create({
     width: SCREEN_WIDTH,
     backgroundColor: 'blue',
     alignItems: "center",
-    justifyContent: 'center'
+    justifyContent: 'center',
+    borderWidth: 1,
   },
   signupbutton: {
     flex: 0.2,
     width: SCREEN_WIDTH,
     backgroundColor: 'blue',
     alignItems: "center",
-    justifyContent: 'center'
+    justifyContent: 'center',
+    borderWidth: 1,
   },
   heading: {
     flex: 0.2,
