@@ -82,7 +82,7 @@ export default class User extends Component {
         secureTextEntry={true}
         placeholder={"Password"}
       />
-      <Text style={styles.heading}>PICK POLYGON COLOR</Text>
+      <Text style={styles.heading}>Pick your color</Text>
       <Picker selectedValue = {this.state.color} onValueChange = {this.updateColor}>
         <Picker.Item color="red" label = "Red" value = "red" />
         <Picker.Item color="blue" label = "Blue" value = "blue" />
@@ -92,16 +92,20 @@ export default class User extends Component {
         <Picker.Item color="orange" label = "Orange" value = "orange" />
       </Picker>
       <Text style = {this.state.pickerStyle}>{this.state.color}</Text>
+
         <View style={styles.button}>
           <Button
           onPress={ this.signup }
           title="Sign Up"
           />
-          <Button
-          onPress={ this.signin }
-          title="Sign In"
-          />
         </View>
+        <View style={styles.button}>
+        <Button
+        onPress={ this.signin }
+        title="Sign In"
+        />
+        </View>
+
       </View>
     );
   }
@@ -111,6 +115,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor:'#2f63b7',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
   heading: {
     top: 20,
@@ -120,12 +126,10 @@ const styles = StyleSheet.create({
   },
   textinput: {
    height: 40,
-   borderColor: 'red',
    borderWidth: 1
  },
   button: {
     backgroundColor:'#a1b1cc',
-    minHeight: 40,
-    top: 0,
+    height: 40,
   },
 });
