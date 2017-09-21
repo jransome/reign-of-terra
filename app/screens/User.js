@@ -1,8 +1,12 @@
 import * as constants from '../Constants'
 import React, { Component } from 'react';
-import { AppRegistry, Text, View, StyleSheet, Button, TextInput, Picker} from 'react-native';
+import { AppRegistry, Text, View, Dimensions, StyleSheet, Button, TextInput, Picker, TouchableOpacity } from 'react-native';
 import { StackNavigator } from 'react-navigation'
 import ColorPicker from '../components/ColorPicker.js'
+
+const {width, height} = Dimensions.get('window');
+const SCREEN_HEIGHT = height;
+const SCREEN_WIDTH = width;
 
 export default class User extends Component {
   static navigationOptions = {
@@ -14,6 +18,7 @@ export default class User extends Component {
     this.state = {
       email: 'default@gmail.com',
       password: 'default',
+      username: "",
       color: "red",
       pickerStyle: {
          fontSize: 30,
@@ -31,7 +36,7 @@ export default class User extends Component {
     dbRef.createUserWithEmailAndPassword(this.state.email, this.state.password)
     .then(function(user) {
       constants.firebaseApp.database().ref('users').push({
-        email: user.email, color: self.state.color
+        email: user.email, color: self.state.color, username: self.state.username
       });
       self.props.navigation.navigate("Map")
     })
@@ -68,7 +73,7 @@ export default class User extends Component {
     const { navigate } = this.props.navigation;
 
     return (
-      <View>
+      <View style={styles.container}>
       <TextInput
         style={styles.textinput}
         onChangeText={(text) => this.setState({email: text})}
@@ -81,6 +86,12 @@ export default class User extends Component {
         value={this.state.password}
         secureTextEntry={true}
         placeholder={"Password"}
+      />
+      <TextInput
+        style={styles.textinput}
+        onChangeText={(text) => this.setState({username: text})}
+        value={this.state.username}
+        placeholder={"Username"}
       />
       <Text style={styles.heading}>Choose a color for your territory</Text>
       <Picker selectedValue = {this.state.color} onValueChange = {this.updateColor}>
@@ -99,11 +110,11 @@ export default class User extends Component {
           title="Sign Up"
           />
         </View>
+
         <View style={styles.signinbutton}>
-        <Button
-        onPress={ this.signin }
-        title="Sign In"
-        />
+          <TouchableOpacity onPress={this.signin}>
+            <Text style={{fontSize: 30, color: "white"}}> Sign In </Text>
+          </TouchableOpacity>
         </View>
 
       </View>
@@ -114,28 +125,33 @@ export default class User extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor:'#2f63b7',
+    backgroundColor:'white',
     flexDirection: 'column',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
+  },
+  signinbutton: {
+    flex:0.1,
+    width: SCREEN_WIDTH,
+    backgroundColor: 'blue',
+    alignItems: "center",
+    justifyContent: 'center'
   },
   heading: {
-    top: 20,
-    color: "blue",
+    flex: 0.2,
+    color: "black",
     fontSize: 25,
-    textAlign: "center"
+    textAlign: "center",
+    margin: 10
   },
   textinput: {
-   height: 40,
+    margin:10,
+   flex: 0.2,
    borderWidth: 1,
  },
   signupbutton: {
-    top: 10,
+    flex: 0.2,
+    color: "white",
     backgroundColor:'#a1b1cc',
-    height: 40,
-  },
-  signinbutton: {
-    top: 10,
-    backgroundColor:'#a1b1cc',
-    height: 40,
+    margin: 10
   },
 });
