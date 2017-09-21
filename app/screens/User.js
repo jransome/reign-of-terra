@@ -16,8 +16,8 @@ export default class User extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: 'default@gmail.com',
-      password: 'default',
+      email: '',
+      password: '',
       username: "",
       color: "red",
       backgroundColor: "red",
