@@ -190,12 +190,12 @@ class Map extends Component {
   }
 
   setStartStopButtonToStop() {
-    this.setState({ startStopButtonStyle: {width: SCREEN_WIDTH, flex: 0.1, backgroundColor: 'red', alignItems: "center", justifyContent: 'center'} });
+    this.setState({ startStopButtonStyle: {width: SCREEN_WIDTH, flex: 0.1, backgroundColor: '#860f91', alignItems: "center", justifyContent: 'center'} });
     this.setState({ startStopButtonText: 'Stop' });
   }
 
   setStartStopButtonToStart() {
-    this.setState({ startStopButtonStyle: {width: SCREEN_WIDTH, flex: 0.1, backgroundColor: 'green', alignItems: "center", justifyContent: 'center'} });
+    this.setState({ startStopButtonStyle: {width: SCREEN_WIDTH, flex: 0.1, backgroundColor: '#2fb75d', alignItems: "center", justifyContent: 'center'} });
     this.setState({ startStopButtonText: 'Start' });
   }
 
@@ -235,7 +235,7 @@ class Map extends Component {
           width: SCREEN_WIDTH,
           flex: 0.1
         }}>
-        <Text style={{ fontSize: 30, textAlign: "center" }}> {this.state.username} </Text>
+        <Text style={{ fontSize: 30, textAlign: "center", color: "white" }}> {this.state.username}'s Empire </Text>
         </View>
 
         <MapView
