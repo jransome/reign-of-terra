@@ -32,6 +32,7 @@ export default class User extends Component {
   }
 
   signup(){
+    if (this.state.username === "") alert("Please enter a username")
     var self = this;
     var dbRef = constants.firebaseApp.auth()
     dbRef.createUserWithEmailAndPassword(this.state.email, this.state.password)
