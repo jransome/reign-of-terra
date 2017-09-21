@@ -20,11 +20,11 @@ export default class User extends Component {
       password: '',
       username: "",
       color: "red",
-      backgroundColor: "red",
+      backgroundColor: "#9e1f5a",
       pickerStyle: {
-         fontSize: 30,
+         fontSize: 25,
          alignSelf: 'center',
-         color: "red"
+         color: "#9e1f5a"
       }
     }
     this.signup = this.signup.bind(this);
@@ -98,58 +98,64 @@ export default class User extends Component {
         placeholder={"Username"}
       />
       <Text style={styles.heading}>Choose a color for your territory</Text>
-      <Picker selectedValue = {this.state.color} onValueChange = {this.updateColor}>
-        <Picker.Item label = "Red" value = "red" />
-        <Picker.Item label = "Blue" value = "blue" />
-        <Picker.Item label = "Green" value = "green" />
-        <Picker.Item label = "Yellow" value = "yellow" />
-        <Picker.Item label = "Pink" value = "pink" />
-        <Picker.Item label = "Orange" value = "orange" />
-      </Picker>
+     <Picker selectedValue = {this.state.color} onValueChange = {this.updateColor}>
+       <Picker.Item label = "Purple" value = "#9e1f5a" />
+       <Picker.Item label = "Blue" value = "#355ef2" />
+       <Picker.Item label = "Green" value = "#6df9a0" />
+       <Picker.Item label = "Yellow" value = "#f9f06d" />
+       <Picker.Item label = "Pink" value = "#f274eb" />
+       <Picker.Item label = "Orange" value = "#fc9207" />
+     </Picker>
 
-        <View style={styles.signupbutton}>
-          <TouchableOpacity onPress={this.signup}>
-            <Text style={{fontSize: 30, color: "white"}}> Sign Up </Text>
-          </TouchableOpacity>
-        </View>
+       <View style={styles.signupbutton}>
+         <TouchableOpacity onPress={this.signup}>
+           <Text style={{fontSize: 25, color: "white"}}> Sign Up </Text>
+         </TouchableOpacity>
+       </View>
 
-        <View style={styles.signinbutton}>
-          <TouchableOpacity onPress={this.signin}>
-            <Text style={{fontSize: 30, color: "white"}}> Sign In </Text>
-          </TouchableOpacity>
-        </View>
+       <View style={styles.signinbutton}>
+         <TouchableOpacity onPress={this.signin}>
+           <Text style={{fontSize: 25, color: "white"}}> Sign In </Text>
+         </TouchableOpacity>
+       </View>
 
-      </View>
-    );
-  }
+     </View>
+   );
+ }
 }
 
 const styles = StyleSheet.create({
-  signinbutton: {
-    flex: 0.2,
-    width: SCREEN_WIDTH,
-    backgroundColor: 'blue',
-    alignItems: "center",
-    justifyContent: 'center',
-    borderWidth: 1,
-  },
-  signupbutton: {
-    flex: 0.2,
-    width: SCREEN_WIDTH,
-    backgroundColor: 'blue',
-    alignItems: "center",
-    justifyContent: 'center',
-    borderWidth: 1,
-  },
-  heading: {
-    flex: 0.2,
-    color: "black",
-    fontSize: 25,
-    textAlign: "center",
-  },
-  textinput: {
-   backgroundColor: "white",
+ signinbutton: {
    flex: 0.2,
+   width: SCREEN_WIDTH,
+   backgroundColor: '#4f8ef2',
+   alignItems: "center",
+   justifyContent: 'center',
    borderWidth: 1,
+   borderColor: "#4f8ef2",
  },
+ signupbutton: {
+   flex: 0.2,
+   width: SCREEN_WIDTH,
+   backgroundColor: '#4f8ef2',
+   alignItems: "center",
+   justifyContent: 'center',
+   borderWidth: 1,
+   borderColor: "#4f8ef2",
+
+ },
+ heading: {
+   flex: 0.2,
+   color: "white",
+   top: 30,
+   fontSize: 25,
+   textAlign: "center",
+ },
+ textinput: {
+  backgroundColor: "white",
+  flex: 0.2,
+  borderWidth: 1,
+  borderColor: "white",
+  fontSize: 20,
+},
 });

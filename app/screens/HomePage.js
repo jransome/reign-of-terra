@@ -16,7 +16,7 @@ class HomePage extends Component {
 
         <View style={styles.buttonView}>
           <TouchableOpacity onPress={() => navigate('User')}>
-            <Text style={styles.buttonText}> Go to User Page </Text>
+            <Text style={styles.buttonText}> click_to_start </Text>
           </TouchableOpacity>
         </View>
 
@@ -35,21 +35,23 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 40,
     color: "white",
-    fontFamily: "SnellRoundhand-Bold",
+    fontFamily: "Noteworthy",
     textAlign: 'center',
+
   },
   buttonView:{
     flex: 0.08,
     alignItems: "center",
     justifyContent: 'center',
     backgroundColor:'#a1b1cc',
-    minHeight: 40,
+    minHeight: 20,
+    borderRadius: 40,
   },
   name: {
-    fontFamily: "SnellRoundhand-Bold",
-    fontSize: 55,
+    fontFamily: "Noteworthy",
+    fontSize: 60,
     textAlign: 'center',
-    color: 'blue',
+    color: '#011a42',
     top: 80,
     flex: 0.3
   },
