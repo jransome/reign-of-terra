@@ -9,7 +9,7 @@ export default class Square extends Component {
     super(props);
     this.state = {
       ownerID: null,
-      color: 'rgba(120,50,200,0.3)',
+      color: props.fillColor,
       strokeColor: 'rgba(20,20,20,0.1)',
       strokeWidth: 0.2,
       namedCoords: props.coordinates,

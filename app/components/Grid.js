@@ -3,6 +3,7 @@ import * as constants from '../Constants'
 import React, { Component } from 'react';
 import MapView from 'react-native-maps';
 import Square from './Square.js';
+import lineIntersect from 'line-intersect';
 
 import {
   AppRegistry,
@@ -15,12 +16,13 @@ import {
   TouchableOpacity
 } from 'react-native';
 
-
-
 export default class Grid extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      b: false,
+      preExistingJourniesCalculated: false,
+      allJournies: props.allJournies,
       grid: [],
       gridJsx: [],
       currentSquare: null,
@@ -28,6 +30,7 @@ export default class Grid extends Component {
     this.dbGridRef = constants.firebaseApp.database().ref().child('grid_test');
     // this.setupDatabaseListener();
     this.initialiseGrid();
+    this.checkJourneyIntersections();
   }
 
   // setupDatabaseListener(){
@@ -43,6 +46,14 @@ export default class Grid extends Component {
   //   };
   //   this.dbGridRef.on('value', refreshGrid);
   // }
+
+  componentDidUpdate(){
+    console.log(this.state.allJournies.length > 0)
+    if(!this.state.preExistingJourniesCalculated && this.state.allJournies.length > 0){
+      this.checkJourneyIntersections();
+      this.state.preExistingJourniesCalculated = true;
+    }
+  }
 
   initialiseGrid() {
     function generateSquareCoordsFromOrigin(origin){
@@ -83,7 +94,87 @@ export default class Grid extends Component {
     }))
   }
 
+  checkJourneyIntersections(){
+    var self = this;
+    this.state.allJournies.forEach(function(journey){ // For each journey
+      var journeyLines = getLinesFromCoords(journey.props.linePositions);
+      journeyLines.forEach(function(line){ // For each line within that journey
+
+        // var gridSample = self.state.grid.slice(0,2);
+        self.state.grid.forEach(function(square){ // For each square cell
+          var squareCorners = enumerateCoords(square.coordinates);
+          var borders = getLinesFromCoords(squareCorners);
+
+          borders.forEach(function(border){ // For each square border
+            var result = lineIntersect.checkIntersection(
+              border[0].longitude, border[0].latitude,
+              border[1].longitude, border[1].latitude,
+              line[0].longitude, line[0].latitude,
+              line[1].longitude, line[1].latitude
+            );
+            console.log(result.type)
+            if (result.type === 'intersecting'){
+              square.colour = 'rgba(200, 200, 100, 0.8)';
+              square.ownerID = 1;
+              console.log(square)
+            }
+
+          })
+
+        })
+
+      });
+
+    });
+    this.state.b = true;
+    this.state.gridJsx = this.generateGridJsx(this.state.grid);
+
+    function getLinesFromCoords(coords){
+      var lines = [];
+      for (var i = 0; i < coords.length; i++) {
+        if(coords[i+1] !== undefined){
+          lines.push([coords[i], coords[i+1]])
+        }
+      }
+      return lines;
+    }
+
+    function enumerateCoords(coords) {
+      return [
+        coords.bottomLeft,
+        coords.topLeft,
+        coords.topRight,
+        coords.bottomRight
+      ];
+    }
+
+    // var line1 = {
+    //   start: {x: 0, y: 3},
+    //   end: {x: 3, y: 3}
+    // }
+    // var line2 = {
+    //   start: {x: 1, y: 0},
+    //   end: {x: 1, y: 2}
+    // }
+    //
+    // var result = lineIntersect.checkIntersection(
+    //   line1.start.x, line1.start.y, line1.end.x, line1.end.y,
+    //   line2.start.x, line2.start.y, line2.end.x, line2.end.y
+    // );
+    //
+    // console.log(result.type)  // any of none, parallel, colinear, intersecting
+    // console.log(result.point) // only exists when result.type == 'intersecting'
+
+  }
+
+
+
+
+
   render() {
+    if(this.state.b){
+      console.log(this.state.gridJsx)
+    }
     return <View>{this.state.gridJsx}</View>
   }
 }

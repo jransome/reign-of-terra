@@ -219,7 +219,7 @@ class Map extends Component {
             </View>
           </MapView.Marker>
 
-          <Grid/>
+          <Grid allJournies={this.state.allJournies}/>
           <JourneyLine linePositions={this.state.linePositions}/>
           { this.state.territoriesArray }
           { this.state.allJournies }
