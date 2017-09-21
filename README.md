@@ -10,6 +10,27 @@ built by
 
 Establish your rule over vast swathes of London just by going for a run or cycle! Raid other people’s territories and gain their lands! Who will have the largest empire? Who’s Reign of Terra will dominate?
 
+#### To use our app
+
+[Install node](https://nodejs.org/en/download/)
+
+[Install React Native dependencies](https://facebook.github.io/react-native/docs/getting-started.html#content/)
+
+From the terminal:
+
+```
+git clone git@github.com:jransome/reign-of-terra.git
+cd reign-of-terra
+npm i
+npm start
+```
+
+Then in a new terminal window:
+
+For ios: `react-native run-ios`
+
+For ios: `react-native run-android`
+
 #### How does our app work?
 
 * Login/signup
@@ -38,18 +59,3 @@ Establish your rule over vast swathes of London just by going for a run or cycle
 * Squares - has coordinates and an owner/colour
 * When a user has made a journey, its coordinates are saved to our database in real time, meaning that other users will be able to see the new journey without reloading.
 * The new journey is broken down into lines and each line is checked for a collision with each square on the grid. When a square is ‘collided’ with, the ownership of said square is transferred to the owner of that journey.
-
-#### Struggles
-
-* Never built a mobile app before
-* How to choose the technologies to use
-* What materials to use to build a boat?
-* The idea was floated between a mobile app and a web app
-* No idea how none of these stacks work
-* Spending too much time on choosing technologies, could not make firm decision  
-* Once we decided on React Native all error messages didn’t make sense
-* Went through the dependency hell - could not get code running on all machines
-* Extracting logic to the separate components
-* Getting false positives from the simulator - defaulted to San Francisco
-* Working out the detection collision on the square
-* … and many others along the way
