@@ -105,10 +105,9 @@ export default class User extends Component {
       <Text style = {this.state.pickerStyle}>{this.state.color}</Text>
 
         <View style={styles.signupbutton}>
-          <Button
-          onPress={ this.signup }
-          title="Sign Up"
-          />
+          <TouchableOpacity onPress={this.signup}>
+            <Text style={{fontSize: 30, color: "white"}}> Sign Up </Text>
+          </TouchableOpacity>
         </View>
 
         <View style={styles.signinbutton}>
@@ -130,7 +129,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   signinbutton: {
-    flex:0.1,
+    flex: 0.2,
+    width: SCREEN_WIDTH,
+    backgroundColor: 'blue',
+    alignItems: "center",
+    justifyContent: 'center'
+  },
+  signupbutton: {
+    flex: 0.2,
     width: SCREEN_WIDTH,
     backgroundColor: 'blue',
     alignItems: "center",
@@ -141,17 +147,9 @@ const styles = StyleSheet.create({
     color: "black",
     fontSize: 25,
     textAlign: "center",
-    margin: 10
   },
   textinput: {
-    margin:10,
    flex: 0.2,
    borderWidth: 1,
  },
-  signupbutton: {
-    flex: 0.2,
-    color: "white",
-    backgroundColor:'#a1b1cc',
-    margin: 10
-  },
 });
