@@ -53,6 +53,7 @@ class Map extends Component {
       territoriesArray: [],
       linePositions: [],
       userColor: "white",
+      username: "",
       userEmail: "loading...",
       allJournies: []
     };
@@ -81,6 +82,7 @@ class Map extends Component {
       snap.forEach( (child) => {
         if (child.val().email === email) {
           self.setState({ userColor: child.val().color });
+          self.setState({ username: child.val().username });
           return;
         }
       });
@@ -233,7 +235,7 @@ class Map extends Component {
           width: SCREEN_WIDTH,
           flex: 0.1
         }}>
-        <Text style={{ fontSize: 30, textAlign: "center" }}> {this.state.userEmail} </Text>
+        <Text style={{ fontSize: 30, textAlign: "center" }}> {this.state.username} </Text>
         </View>
 
         <MapView

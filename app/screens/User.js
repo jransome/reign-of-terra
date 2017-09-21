@@ -1,8 +1,12 @@
 import * as constants from '../Constants'
 import React, { Component } from 'react';
-import { AppRegistry, Text, View, StyleSheet, Button, TextInput, Picker} from 'react-native';
+import { AppRegistry, Text, View, Dimensions, StyleSheet, Button, TextInput, Picker, TouchableOpacity } from 'react-native';
 import { StackNavigator } from 'react-navigation'
 import ColorPicker from '../components/ColorPicker.js'
+
+const {width, height} = Dimensions.get('window');
+const SCREEN_HEIGHT = height;
+const SCREEN_WIDTH = width;
 
 export default class User extends Component {
   static navigationOptions = {
@@ -14,7 +18,9 @@ export default class User extends Component {
     this.state = {
       email: 'default@gmail.com',
       password: 'default',
+      username: "",
       color: "red",
+      backgroundColor: "red",
       pickerStyle: {
          fontSize: 30,
          alignSelf: 'center',
@@ -31,7 +37,7 @@ export default class User extends Component {
     dbRef.createUserWithEmailAndPassword(this.state.email, this.state.password)
     .then(function(user) {
       constants.firebaseApp.database().ref('users').push({
-        email: user.email, color: self.state.color
+        email: user.email, color: self.state.color, username: self.state.username
       });
       self.props.navigation.navigate("Map")
     })
@@ -42,11 +48,8 @@ export default class User extends Component {
 
   signin(){
     var self = this;
-    alert("signing in")
-    // this.props.navigation.navigate("Map")
     constants.firebaseApp.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
     .then(function(user) {
-      alert("Signed in as: " + user.email)
       self.props.navigation.navigate("Map")
     }).catch(function(error) {
       alert(error.code + error.message)
@@ -54,7 +57,7 @@ export default class User extends Component {
   }
 
   updateColor = (color) => {
-     this.setState({ color: color })
+     this.setState({ backgroundColor: color, color: color })
      var newStyle = {
         fontSize: 30,
         alignSelf: 'center',
@@ -68,7 +71,12 @@ export default class User extends Component {
     const { navigate } = this.props.navigation;
 
     return (
-      <View>
+      <View style={{
+        flex: 1,
+        backgroundColor:this.state.backgroundColor,
+        flexDirection: 'column',
+        justifyContent: 'center',
+      }}>
       <TextInput
         style={styles.textinput}
         onChangeText={(text) => this.setState({email: text})}
@@ -82,50 +90,65 @@ export default class User extends Component {
         secureTextEntry={true}
         placeholder={"Password"}
       />
-      <Text style={styles.heading}>PICK POLYGON COLOR</Text>
+      <TextInput
+        style={styles.textinput}
+        onChangeText={(text) => this.setState({username: text})}
+        value={this.state.username}
+        placeholder={"Username"}
+      />
+      <Text style={styles.heading}>Choose a color for your territory</Text>
       <Picker selectedValue = {this.state.color} onValueChange = {this.updateColor}>
-        <Picker.Item color="red" label = "Red" value = "red" />
-        <Picker.Item color="blue" label = "Blue" value = "blue" />
-        <Picker.Item color="green" label = "Green" value = "green" />
-        <Picker.Item color="yellow" label = "Yellow" value = "yellow" />
-        <Picker.Item color="pink" label = "Pink" value = "pink" />
-        <Picker.Item color="orange" label = "Orange" value = "orange" />
+        <Picker.Item label = "Red" value = "red" />
+        <Picker.Item label = "Blue" value = "blue" />
+        <Picker.Item label = "Green" value = "green" />
+        <Picker.Item label = "Yellow" value = "yellow" />
+        <Picker.Item label = "Pink" value = "pink" />
+        <Picker.Item label = "Orange" value = "orange" />
       </Picker>
-      <Text style = {this.state.pickerStyle}>{this.state.color}</Text>
-        <View style={styles.button}>
-          <Button
-          onPress={ this.signup }
-          title="Sign Up"
-          />
-          <Button
-          onPress={ this.signin }
-          title="Sign In"
-          />
+
+        <View style={styles.signupbutton}>
+          <TouchableOpacity onPress={this.signup}>
+            <Text style={{fontSize: 30, color: "white"}}> Sign Up </Text>
+          </TouchableOpacity>
         </View>
+
+        <View style={styles.signinbutton}>
+          <TouchableOpacity onPress={this.signin}>
+            <Text style={{fontSize: 30, color: "white"}}> Sign In </Text>
+          </TouchableOpacity>
+        </View>
+
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor:'#2f63b7',
+  signinbutton: {
+    flex: 0.2,
+    width: SCREEN_WIDTH,
+    backgroundColor: 'blue',
+    alignItems: "center",
+    justifyContent: 'center',
+    borderWidth: 1,
+  },
+  signupbutton: {
+    flex: 0.2,
+    width: SCREEN_WIDTH,
+    backgroundColor: 'blue',
+    alignItems: "center",
+    justifyContent: 'center',
+    borderWidth: 1,
   },
   heading: {
-    top: 20,
-    color: "blue",
+    flex: 0.2,
+    color: "black",
     fontSize: 25,
-    textAlign: "center"
+    textAlign: "center",
   },
   textinput: {
-   height: 40,
-   borderColor: 'red',
-   borderWidth: 1
+   backgroundColor: "white",
+   flex: 0.2,
+   borderWidth: 1,
  },
-  button: {
-    backgroundColor:'#a1b1cc',
-    minHeight: 40,
-    top: 0,
-  },
 });

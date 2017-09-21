@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AppRegistry, StyleSheet, Text, View, Button, Image } from 'react-native';
+import { AppRegistry, StyleSheet, Text, View, Button, Image, TouchableOpacity } from 'react-native';
 
 class HomePage extends Component {
   static navigationOptions = {
@@ -11,21 +11,13 @@ class HomePage extends Component {
     return (
       <View style={styles.container}>
 
-        <View style={styles.logo}>
         <Text style={styles.name}>reign_of_terra</Text>
-          <Image style={styles.imagePosition} source={{uri: "https://i.stack.imgur.com/3kVAu.png"}} />
-        </View>
+        <Image style={styles.imagePosition} source={{uri: "https://i.stack.imgur.com/3kVAu.png"}} />
 
-        <View style={styles.loginFields}>
-        </View>
-
-        <View style={styles.submitButtons}>
-          <View style={styles.button}>
-            <Button
-            onPress={() => navigate('User')}
-            title="Go to User Page"
-            />
-          </View>
+        <View style={styles.buttonView}>
+          <TouchableOpacity onPress={() => navigate('User')}>
+            <Text style={styles.buttonText}> Go to User Page </Text>
+          </TouchableOpacity>
         </View>
 
       </View>
@@ -37,18 +29,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor:'#2f63b7',
+    flexDirection: 'column',
+    justifyContent: 'center',
   },
-  logo:{
-    flex: 0.3,
-    backgroundColor:'red',
+  buttonText: {
+    fontSize: 40,
+    color: "white",
+    fontFamily: "SnellRoundhand-Bold",
+    textAlign: 'center',
   },
-  loginFields:{
-    flex: 0.2,
-    backgroundColor:'green',
-  },
-  submitButtons:{
-    flex: 0.5,
-    backgroundColor:'yellow',
+  buttonView:{
+    flex: 0.08,
+    alignItems: "center",
+    justifyContent: 'center',
+    backgroundColor:'#a1b1cc',
+    minHeight: 40,
   },
   name: {
     fontFamily: "SnellRoundhand-Bold",
@@ -56,16 +51,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: 'blue',
     top: 80,
+    flex: 0.3
   },
   imagePosition: {
-    width: 180,
-    height: 180,
-  },
-  button: {
-    backgroundColor:'#a1b1cc',
-    minHeight: 40,
-    top: 200,
-
+    flex: 0.3,
   },
 });
 export default HomePage;
