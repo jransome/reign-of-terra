@@ -93,26 +93,27 @@ class Map extends Component {
     var self = this;
     var refreshJournies = function(data) {
       var val = data.val();
-      console.log(val);
       self.state.allJournies.push( <JourneyLine linePositions={val.coordinates} lineColour={val.colour}/>);
     };
     this.dbJourneyRef.on('child_added', refreshJournies);
   }
 
-  getData(dbRef){
-    var self = this;
-    dbRef.on ('value', (snap) => {
-      let territories = []
-      snap.forEach( (child) => {
-        var color = child.val().color;
-        var coordinates = child.val().coordinates;
-        territories.push(  <MapView.Polygon coordinates={coordinates} fillColor={color}/> );
-      });
-      self.setState({
-        territoriesArray: territories
-      });
-    });
-  }
+  // getData(dbRef){
+  //   var self = this;
+  //   dbRef.on ('value', (snap) => {
+  //     let territories = []
+  //
+  //     snap.forEach( (child, i) => {
+  //       var color = child.val().color;
+  //       var coordinates = child.val().coordinates;
+  //       console.log(i)
+  //       territories.push(  <MapView.Polygon key={i} coordinates={coordinates} fillColor={color}/> );
+  //     });
+  //     self.setState({
+  //       territoriesArray: territories
+  //     });
+  //   });
+  // }
 
   componentWillMount(){
     // this.getData(this.routesRef);
@@ -121,7 +122,7 @@ class Map extends Component {
   watchID: ?number = null
 
   componentDidMount() {
-    this.getData(this.dbRef);
+    // this.getData(this.dbRef);
     var self = this;
 
     function error(err) {
