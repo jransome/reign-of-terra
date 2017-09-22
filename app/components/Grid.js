@@ -62,7 +62,7 @@ export default class Grid extends Component {
           bottomRight: { latitude: origin.latitude, longitude: origin.longitude + constants.SQUARE_HEIGHT_WIDTH },
         },
         ownerID: 0,
-        colour: 'rgba(200, 20, 200, 0.2)',
+        colour: 'rgba(200, 200, 200, 0.3)',
       };
     };
 

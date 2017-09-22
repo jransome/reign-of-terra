@@ -94,7 +94,7 @@ class Map extends Component {
       var newJourney = {
         coordinates: this.state.linePositions,
         ownerID: 0,
-        colour: 'blue',
+        colour: this.state.userColor,
       }
       dbRef.push(newJourney);
       this.resetJourney()
@@ -150,7 +150,6 @@ class Map extends Component {
   componentDidMount() {
     this.getUserData()
 
-    this.getData(this.dbRef);
     var self = this;
 
     function error(err) {
