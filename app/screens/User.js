@@ -49,12 +49,12 @@ export default class User extends Component {
 
   signin(){
     var self = this;
-    // constants.firebaseApp.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
-    // .then(function(user) {
+    constants.firebaseApp.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
+    .then(function(user) {
       self.props.navigation.navigate("Map")
-    // }).catch(function(error) {
-    //   alert(error.code + error.message)
-    // });
+    }).catch(function(error) {
+      alert(error.code + error.message)
+    });
   }
 
   updateColor = (color) => {
