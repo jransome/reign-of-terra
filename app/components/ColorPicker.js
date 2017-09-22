@@ -2,18 +2,21 @@ import React, { Component } from 'react';
 import { View, Text, Picker, StyleSheet } from 'react-native'
 
 class ColorPicker extends Component {
-   state = {
-     color: '',
-     style: {
-        fontSize: 50,
-        alignSelf: 'center',
-        color: "red"
+  constructor(props) {
+    super(props);
+    this.state = {
+       color: "red",
+       style: {
+          fontSize: 30,
+          alignSelf: 'center',
+          color: "red"
+       }
      }
    }
    updateColor = (color) => {
       this.setState({ color: color })
       var newStyle = {
-         fontSize: 50,
+         fontSize: 30,
          alignSelf: 'center',
          color: color
       }
