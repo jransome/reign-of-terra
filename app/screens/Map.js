@@ -94,7 +94,7 @@ class Map extends Component {
       var newJourney = {
         coordinates: this.state.linePositions,
         ownerID: 0,
-        colour: 'blue',
+        colour: this.state.userColor,
       }
       dbRef.push(newJourney);
       this.resetJourney()
@@ -111,26 +111,27 @@ class Map extends Component {
     var self = this;
     var refreshJournies = function(data) {
       var val = data.val();
-      console.log(val);
       self.state.allJournies.push( <JourneyLine linePositions={val.coordinates} lineColour={val.colour}/>);
     };
     this.dbJourneyRef.on('child_added', refreshJournies);
   }
 
-  getData(dbRef){
-    var self = this;
-    dbRef.on ('value', (snap) => {
-      let territories = []
-      snap.forEach( (child) => {
-        var color = child.val().color;
-        var coordinates = child.val().coordinates;
-        territories.push(  <MapView.Polygon coordinates={coordinates} fillColor={color}/> );
-      });
-      self.setState({
-        territoriesArray: territories
-      });
-    });
-  }
+  // getData(dbRef){
+  //   var self = this;
+  //   dbRef.on ('value', (snap) => {
+  //     let territories = []
+  //
+  //     snap.forEach( (child, i) => {
+  //       var color = child.val().color;
+  //       var coordinates = child.val().coordinates;
+  //       console.log(i)
+  //       territories.push(  <MapView.Polygon key={i} coordinates={coordinates} fillColor={color}/> );
+  //     });
+  //     self.setState({
+  //       territoriesArray: territories
+  //     });
+  //   });
+  // }
 
   addRoute(dbRef){
     dbRef.push(this.linePositions);
@@ -149,7 +150,6 @@ class Map extends Component {
   componentDidMount() {
     this.getUserData()
 
-    this.getData(this.dbRef);
     var self = this;
 
     function error(err) {
@@ -254,7 +254,7 @@ class Map extends Component {
             </View>
           </MapView.Marker>
 
-          <Grid/>
+          <Grid allJournies={this.state.allJournies}/>
           <JourneyLine linePositions={this.state.linePositions}/>
           { this.state.territoriesArray }
           { this.state.allJournies }
