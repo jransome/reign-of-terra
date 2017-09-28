@@ -1,6 +1,6 @@
-<img src="https://i.imgur.com/U0wuNXj.png" width="300" align="right">
-
 # Reign of Terra
+
+<img src="https://i.imgur.com/U0wuNXj.png" width="300" align="right">
 
 Makers Academy final project, July-September 2017
 
