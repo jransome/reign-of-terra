@@ -14,7 +14,7 @@ Please see our [presentation](http://slides.com/teamdream/deck/live#/) for expla
 
 Establish your rule over vast swathes of London just by going for a run or cycle! Raid other people’s territories and gain their lands! Who will have the largest empire? Who’s Reign of Terra will dominate?
 
-![Reign of Terra](https://i.imgur.com/U0wuNXj.png | width=200)
+![Reign of Terra](https://i.imgur.com/U0wuNXj.png){:height="50%" width="50%"}
 
 #### To use our app
 
