@@ -23,11 +23,14 @@ describe('HomePage', () => {
     expect(jsontree.children[0].children).to.include('reign_of_terra');
   });
 
-  it('has a button with text click_to_start', () => {
+  it('renders a View that has a button with text click_to_start', () =>{
     const tree = renderer.create(<HomePage navigation={ mockNavigation }/>);
     const jsontree = tree.toJSON()
+    expect(jsontree.children[2].children[0].type).to.equal('View');
+    expect(jsontree.children[2].children[0].children[0].type).to.equal('Text');
     expect(jsontree.children[2].children[0].children[0].children[0]).to.include('click_to_start');
   });
+
 });
 
 afterAll(() => setTimeout(() => process.exit(), 4000))
