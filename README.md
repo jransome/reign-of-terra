@@ -1,14 +1,20 @@
 # Reign of Terra
 
+Makers Academy final project, July-September 2017
+
 built by
 * James
 * Yulia
 * Ryan
 * Ben
 
+Please see our [presentation](http://slides.com/teamdream/deck/live#/) for explanations of our design process, technologies used, architecture and how we worked on this as a team.
+
 #### Description
 
 Establish your rule over vast swathes of London just by going for a run or cycle! Raid other people’s territories and gain their lands! Who will have the largest empire? Who’s Reign of Terra will dominate?
+
+![Reign of Terra](https://i.imgur.com/U0wuNXj.png)
 
 #### To use our app
 
@@ -33,6 +39,10 @@ For ios: `react-native run-android`
 
 #### How does our app work?
 
+Here is a video demo:
+
+![[Video Demo](https://i.imgur.com/MGOsp3M.png)](http://slides.com/teamdream/deck/live#/1)
+
 * Login/signup
 * Pick your empire’s colours
 * At beginning of your exercise, press start
@@ -50,6 +60,9 @@ For ios: `react-native run-android`
 * Thus, the scope for more game depth was much greater
 
 #### Architecture
+
+![Architecture](https://i.imgur.com/Qsj5TEi.png)
+
 * To make our app deployable to both Android and iOS, we used React Native.
 * React Native allows you to develop apps for both platforms in Javascript
 * Our app is broken down into components and screens.
