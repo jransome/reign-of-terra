@@ -41,7 +41,7 @@ For ios: `react-native run-android`
 
 Here is a video demo:
 
-<a href="http://slides.com/teamdream/deck/live#/1">
+<a href="http://slides.com/teamdream/deck#/1">
 <img src="https://i.imgur.com/MGOsp3M.png" width="150">
 </a>
 
