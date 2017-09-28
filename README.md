@@ -41,7 +41,7 @@ For ios: `react-native run-android`
 
 Here is a video demo:
 
-![[Video Demo](https://i.imgur.com/MGOsp3M.png)](http://slides.com/teamdream/deck/live#/1)
+[![Video Demo](https://i.imgur.com/MGOsp3M.png)](http://slides.com/teamdream/deck/live#/1)
 
 * Login/signup
 * Pick your empire’s colours
