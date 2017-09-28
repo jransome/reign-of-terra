@@ -1,3 +1,5 @@
+<img src="https://i.imgur.com/U0wuNXj.png" width="300" align="right">
+
 # Reign of Terra
 
 Makers Academy final project, July-September 2017
@@ -13,8 +15,6 @@ Please see our [presentation](http://slides.com/teamdream/deck/live#/) for expla
 #### Description
 
 Establish your rule over vast swathes of London just by going for a run or cycle! Raid other people’s territories and gain their lands! Who will have the largest empire? Who’s Reign of Terra will dominate?
-
-![Reign of Terra](https://i.imgur.com/U0wuNXj.png)
 
 #### To use our app
 
@@ -42,7 +42,7 @@ For ios: `react-native run-android`
 Here is a video demo:
 
 <a href="http://slides.com/teamdream/deck#/1">
-<img src="https://i.imgur.com/MGOsp3M.png" width="150">
+<img src="https://i.imgur.com/MGOsp3M.png" width="200">
 </a>
 
 * Login/signup
