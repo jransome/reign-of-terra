@@ -17,11 +17,17 @@ describe('HomePage', () => {
     );
   });
 
-  // it('RememberAll', () => {
-  //   const tree = renderer.create(<WelcomeHeader />);
-  //   const jsontree = tree.toJSON()
-  //   expect(jsontree.children).to.include('RememberAll');
-  // });
+  it('displays the title', () => {
+    const tree = renderer.create(<HomePage navigation={ mockNavigation }/>);
+    const jsontree = tree.toJSON()
+    expect(jsontree.children[0].children).to.include('reign_of_terra');
+  });
+
+  it('has a button with text click_to_start', () => {
+    const tree = renderer.create(<HomePage navigation={ mockNavigation }/>);
+    const jsontree = tree.toJSON()
+    expect(jsontree.children[2].children[0].children[0].children[0]).to.include('click_to_start');
+  });
 });
 
 afterAll(() => setTimeout(() => process.exit(), 4000))
