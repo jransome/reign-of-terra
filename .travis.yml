@@ -1,6 +1,4 @@
-{
-  "language": "node_js",
-  "install": "npm i",
-  "test": "npm test",
-  "notifications": false
-}
+language: node_js
+before_script":
+  - npm install
+notifications: false
