@@ -1,4 +1,4 @@
 language: node_js
-before_script":
+before_script:
   - npm install
 notifications: false
