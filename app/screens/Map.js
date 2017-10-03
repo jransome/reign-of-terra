@@ -93,7 +93,7 @@ class Map extends Component {
     if (this.state.linePositions.length > 0) {
       var newJourney = {
         coordinates: this.state.linePositions,
-        ownerID: 0,
+        ownerID: constants.firebaseApp.auth().currentUser.email,
         colour: this.state.userColor,
       }
       dbRef.push(newJourney);
