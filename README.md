@@ -1,10 +1,16 @@
 # Reign of Terra
 
+<img src="https://i.imgur.com/U0wuNXj.png" width="300" align="right">
+
+Makers Academy final project, July-September 2017
+
 built by
 * James
 * Yulia
 * Ryan
 * Ben
+
+Please see our [presentation](http://slides.com/teamdream/deck/live#/) for explanations of our design process, technologies used, architecture and how we worked on this as a team.
 
 #### Description
 
@@ -33,6 +39,12 @@ For ios: `react-native run-android`
 
 #### How does our app work?
 
+Here is a video demo:
+
+<a href="http://slides.com/teamdream/deck#/1">
+<img src="https://i.imgur.com/MGOsp3M.png" width="200">
+</a>
+
 * Login/signup
 * Pick your empire’s colours
 * At beginning of your exercise, press start
@@ -50,6 +62,9 @@ For ios: `react-native run-android`
 * Thus, the scope for more game depth was much greater
 
 #### Architecture
+
+![Architecture](https://i.imgur.com/Qsj5TEi.png)
+
 * To make our app deployable to both Android and iOS, we used React Native.
 * React Native allows you to develop apps for both platforms in Javascript
 * Our app is broken down into components and screens.
